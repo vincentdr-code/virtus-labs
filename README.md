@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# convenientia-ops
 
-## Getting Started
+Internal operations dashboard for Convenientia IT Consulting. Private — not for distribution.
 
-First, run the development server:
+Three pillars this tool serves:
+1. **Market research** — scan verticals for companies with archaic workflows
+2. **Business development** — pipeline of prospects, contacts, insight tracking
+3. **Client delivery** — bespoke software projects for clients
+
+## Setup
 
 ```bash
+npm install
+cp .env.example .env
+# Edit .env: set NEXTAUTH_SECRET (openssl rand -base64 32), ADMIN_USERNAME, ADMIN_PASSWORD
+npx prisma migrate dev --name init
+npx prisma db seed
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 and sign in with your `ADMIN_USERNAME` / `ADMIN_PASSWORD`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Remote access via Cloudflare Tunnel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```powershell
+# One-time setup (see plan doc for full instructions)
+winget install --id Cloudflare.cloudflared
+cloudflared tunnel login
+cloudflared tunnel create convenientia-ops
 
-## Learn More
+# Run
+.\start.ps1
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · shadcn/ui · Prisma 7 · SQLite · NextAuth.js v5 (Credentials) · Recharts · Cloudflare Tunnel
