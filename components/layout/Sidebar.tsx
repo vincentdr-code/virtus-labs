@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 import {
   LayoutDashboard,
   Building2,
@@ -10,6 +11,7 @@ import {
   Briefcase,
   BarChart3,
   Handshake,
+  LogOut,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -57,6 +59,15 @@ export function Sidebar() {
           );
         })}
       </nav>
+      <div className="px-3 py-4 border-t border-c-border">
+        <button
+          onClick={() => signOut({ callbackUrl: "/login" })}
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm text-text-tertiary hover:bg-bg-tertiary hover:text-text-primary transition-colors"
+        >
+          <LogOut size={16} />
+          Sign Out
+        </button>
+      </div>
     </aside>
   );
 }
