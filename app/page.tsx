@@ -1,13 +1,55 @@
 import { Topbar } from "@/components/layout/Topbar";
+import { StatCard } from "@/components/dashboard/StatCard";
+import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
+import { getPipelineStats } from "@/lib/actions/companies";
+import {
+  getRecentInteractions,
+  getInsightsDeliveredThisMonth,
+} from "@/lib/actions/interactions";
+import { formatCurrency } from "@/lib/utils";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const [stats, recentActivity, insightsThisMonth] = await Promise.all([
+    getPipelineStats(),
+    getRecentInteractions(8),
+    getInsightsDeliveredThisMonth(),
+  ]);
+
   return (
     <>
       <Topbar
         title="Dashboard"
         action={{ label: "+ Add Company", href: "/companies/new" }}
       />
-      <div className="p-6 text-text-secondary">Dashboard — coming in Task 7</div>
+      <div className="p-6 space-y-8 max-w-5xl">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <StatCard
+            label="Pipeline Value"
+            value={formatCurrency(stats.pipelineValue)}
+            gold
+          />
+          <StatCard
+            label="Active Prospects"
+            value={stats.activeProspects}
+            sub="excluding won/lost/dormant"
+          />
+          <StatCard label="Total Companies" value={stats.totalCompanies} />
+          <StatCard
+            label="Insights Delivered"
+            value={insightsThisMonth}
+            sub="this month"
+          />
+        </div>
+
+        <div>
+          <h2 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-4">
+            Recent Activity
+          </h2>
+          <div className="bg-bg-secondary border border-c-border rounded-lg p-5">
+            <ActivityFeed items={recentActivity} />
+          </div>
+        </div>
+      </div>
     </>
   );
 }
