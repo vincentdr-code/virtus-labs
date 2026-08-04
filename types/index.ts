@@ -1,20 +1,16 @@
-import type {
-  Company,
-  Contact,
-  Interaction,
-  Deal,
-  VerticalResearch,
-  Project,
-} from "@/lib/generated/prisma/models";
+import type { CompanyModel } from "@/lib/generated/prisma/models/Company";
+import type { ContactModel } from "@/lib/generated/prisma/models/Contact";
+import type { InteractionModel } from "@/lib/generated/prisma/models/Interaction";
+import type { DealModel } from "@/lib/generated/prisma/models/Deal";
+import type { VerticalResearchModel } from "@/lib/generated/prisma/models/VerticalResearch";
+import type { ProjectModel } from "@/lib/generated/prisma/models/Project";
 
-export type {
-  Company,
-  Contact,
-  Interaction,
-  Deal,
-  VerticalResearch,
-  Project,
-};
+export type Company = CompanyModel;
+export type Contact = ContactModel;
+export type Interaction = InteractionModel;
+export type Deal = DealModel;
+export type VerticalResearch = VerticalResearchModel;
+export type Project = ProjectModel;
 
 export type CompanyWithRelations = Company & {
   contacts: Contact[];
