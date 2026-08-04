@@ -67,8 +67,10 @@ export function PipelineValueChart({ data }: { data: DealPoint[] }) {
               color: "#F2F0E8",
               fontSize: 12,
             }}
-            formatter={(value: number) => [`$${value.toLocaleString()}`, "Value"]}
-            labelFormatter={(label: string) => label}
+            formatter={(value) => [
+              `$${Number(value).toLocaleString()}`,
+              "Value",
+            ]}
           />
           <Bar dataKey="value" radius={[4, 4, 0, 0]}>
             {chartData.map((d) => (
