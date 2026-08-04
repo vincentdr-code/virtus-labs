@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Topbar } from "@/components/layout/Topbar";
-import { getDeals } from "@/lib/actions/deals";
+import { getDeals, getDealsByStage } from "@/lib/actions/deals";
 import { formatCurrency, formatDate } from "@/lib/utils";
+import { PipelineValueChart } from "@/components/charts/PipelineValueChart";
 
 const STAGE_CONFIG: Record<string, { label: string; color: string }> = {
   DISCOVERY: { label: "Discovery", color: "text-text-secondary" },
@@ -13,7 +14,7 @@ const STAGE_CONFIG: Record<string, { label: string; color: string }> = {
 };
 
 export default async function DealsPage() {
-  const deals = await getDeals();
+  const [deals, chartData] = await Promise.all([getDeals(), getDealsByStage()]);
   const openPipeline = deals
     .filter((d) => !["WON", "LOST"].includes(d.stage))
     .reduce((s, d) => s + (d.valueEstimate ?? 0), 0);
@@ -51,6 +52,8 @@ export default async function DealsPage() {
             </p>
           </div>
         </div>
+
+        {chartData.length > 0 && <PipelineValueChart data={chartData} />}
 
         <div className="bg-bg-secondary border border-c-border rounded-lg overflow-hidden">
           {deals.length === 0 ? (
