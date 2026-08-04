@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Company {
+  id                 String        @id @default(cuid())
+  name               String
+  vertical           String
+  subVertical        String?
+  size               String?
+  location           String?
+  archaicSignalNotes String?
+  source             String?
+  website            String?
+  status             CompanyStatus @default(RESEARCHING)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  contacts     Contact[]
+  interactions Interaction[]
+  deals        Deal[]
+}
+
+enum CompanyStatus {
+  RESEARCHING
+  CONTACTED
+  MEETING_SCHEDULED
+  MEETING_HELD
+  PROPOSAL_SENT
+  WON
+  LOST
+  DORMANT
+}
+
+model Contact {
+  id              String   @id @default(cuid())
+  companyId       String
+  name            String
+  title           String?
+  email           String?
+  phone           String?
+  linkedinUrl     String?
+  isDecisionMaker Boolean  @default(false)
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  company      Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  interactions Interaction[]
+}
+
+model Interaction {
+  id               String          @id @default(cuid())
+  companyId        String
+  contactId        String?
+  type             InteractionType
+  date             DateTime
+  notes            String?
+  insightDelivered String?
+  outcome          String?
+  createdAt        DateTime        @default(now())
+
+  company Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  contact Contact? @relation(fields: [contactId], references: [id])
+}
+
+enum InteractionType {
+  RESEARCH
+  CALL
+  EMAIL
+  MEETING
+  PROPOSAL
+  FOLLOW_UP
+}
+
+model VerticalResearch {
+  id                 String   @id @default(cuid())
+  verticalName       String   @unique
+  slug               String   @unique
+  lastUpdated        DateTime @default(now())
+  keyPainPoints      String?
+  recentDevelopments String?
+  targetBuyerProfile String?
+  marketSize         String?
+  notes              String?
+}
+
+model Deal {
+  id                String    @id @default(cuid())
+  companyId         String
+  serviceType       String
+  valueEstimate     Float?
+  stage             DealStage @default(DISCOVERY)
+  expectedCloseDate DateTime?
+  notes             String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+enum DealStage {
+  DISCOVERY
+  SCOPING
+  PROPOSAL_SENT
+  NEGOTIATION
+  WON
+  LOST
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  companyName String
+  name        String
+  description String?
+  status      ProjectStatus @default(ACTIVE)
+  startDate   DateTime?
+  endDate     DateTime?
+  value       Float?
+  techStack   String?
+  notes       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+enum ProjectStatus {
+  SCOPING
+  ACTIVE
+  PAUSED
+  DELIVERED
+  CANCELLED
+}
