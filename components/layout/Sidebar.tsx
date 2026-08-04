@@ -12,6 +12,7 @@ import {
   BarChart3,
   Handshake,
   LogOut,
+  Mic2,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -23,6 +24,7 @@ const NAV_ITEMS = [
   { href: "/meeting-prep", label: "Meeting Prep", icon: ClipboardList },
   { href: "/projects", label: "Projects", icon: Briefcase },
   { href: "/deals", label: "Deals", icon: Handshake },
+  { href: "/consultation", label: "Consultation", icon: Mic2 },
 ];
 
 export function Sidebar() {

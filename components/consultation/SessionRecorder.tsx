@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { PrototypeBrief, type AnalysisData } from "./PrototypeBrief";
 import { updateConsultationSession } from "@/lib/actions/consultation";
 
@@ -18,6 +19,7 @@ export function SessionRecorder({
   initialPrototypeHtml,
   companyContext,
 }: Props) {
+  const router = useRouter();
   const [recording, setRecording] = useState(false);
   const [transcript, setTranscript] = useState(initialTranscript ?? "");
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(() => {
@@ -156,8 +158,8 @@ export function SessionRecorder({
       transcript: transcriptRef.current,
       status: "COMPLETED",
     });
-    window.location.href = `/consultation/${sessionId}/brief`;
-  }, [sessionId, analyzeTranscript]);
+    router.push(`/consultation/${sessionId}/brief`);
+  }, [sessionId, analyzeTranscript, router]);
 
   return (
     <div className="flex gap-6 h-[calc(100vh-112px)] overflow-hidden">
