@@ -18,7 +18,7 @@ export default async function ProjectsPage() {
   return (
     <>
       <Topbar title="Client Projects" />
-      <div className="p-6 max-w-5xl space-y-5">
+      <div className="p-10 max-w-6xl space-y-6">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div className="bg-bg-secondary border border-c-border rounded-lg p-4">
             <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">

@@ -12,7 +12,7 @@ export default async function ConsultationPage() {
         title="Consultation Sessions"
         action={{ label: "+ New Session", href: "/consultation/new" }}
       />
-      <div className="p-6 max-w-4xl space-y-4">
+      <div className="p-10 max-w-5xl space-y-5">
         <p className="text-text-secondary text-sm">
           Start a session before a discovery call. The mic listens to the
           client, filters out small talk, and builds a working software

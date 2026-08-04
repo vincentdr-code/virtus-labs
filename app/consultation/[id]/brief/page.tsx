@@ -42,7 +42,7 @@ export default async function ConsultationBriefPage({
         title="Consultation Prototype"
         action={{ label: "All Sessions", href: "/consultation" }}
       />
-      <div className="p-6 max-w-4xl space-y-6 print:p-0 print:max-w-none">
+      <div className="p-10 max-w-4xl space-y-8 print:p-0 print:max-w-none">
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>

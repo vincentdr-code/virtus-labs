@@ -23,7 +23,7 @@ export default async function CompanyDetailPage({
   return (
     <>
       <Topbar title={company.name} />
-      <div className="p-6 max-w-4xl space-y-8">
+      <div className="p-10 max-w-4xl space-y-10">
         <div className="bg-bg-secondary border border-c-border rounded-lg p-5">
           <div className="flex items-start justify-between gap-4">
             <div>

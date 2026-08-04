@@ -18,7 +18,7 @@ export default async function MeetingPrepPage({
   return (
     <>
       <Topbar title="Meeting Prep" />
-      <div className="p-6 max-w-3xl space-y-6">
+      <div className="p-10 max-w-3xl space-y-8">
         <form method="GET">
           <label className="text-xs text-text-tertiary mb-2 block uppercase tracking-wider">
             Select a company to prep for

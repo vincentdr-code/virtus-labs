@@ -8,8 +8,8 @@ export default async function ContactsPage() {
   return (
     <>
       <Topbar title="Contacts" />
-      <div className="p-6 max-w-5xl">
-        <div className="bg-bg-secondary border border-c-border rounded-lg overflow-hidden">
+      <div className="p-10 max-w-6xl">
+        <div className="bg-bg-secondary/60 border border-c-border/60 rounded-2xl overflow-hidden">
           {contacts.length === 0 ? (
             <p className="text-text-secondary text-sm p-6">
               No contacts yet. Add them from a company&apos;s detail page.

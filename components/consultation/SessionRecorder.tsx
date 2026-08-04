@@ -162,7 +162,7 @@ export function SessionRecorder({
   }, [sessionId, analyzeTranscript, router]);
 
   return (
-    <div className="flex gap-6 h-[calc(100vh-112px)] overflow-hidden">
+    <div className="flex gap-6 h-[calc(100vh-160px)] overflow-hidden">
       {/* Left: Transcript */}
       <div className="w-1/2 flex flex-col gap-3">
         <div className="bg-bg-secondary border border-c-border rounded-lg p-4 flex items-center justify-between shrink-0">

@@ -54,24 +54,24 @@
 }
 
 :root {
-  /* Convenientia raw palette */
-  --bg-primary: #0A1F1C;
-  --bg-secondary: #0F2B24;
-  --bg-tertiary: #16382F;
-  --navy: #0B1E33;
-  --emerald: #0E6E4F;
-  --emerald-bright: #16A374;
-  --gold: #C9A24B;
-  --gold-bright: #E4C878;
-  --text-primary: #F2F0E8;
-  --text-secondary: #A8B8B0;
-  --text-tertiary: #6B7D75;
-  --c-border: #1E3D33;
-  --success: #16A374;
-  --warning: #C9A24B;
-  --danger: #B4483A;
+  /* Convenientia refined palette — refined & classy */
+  --bg-primary: #0F1513;
+  --bg-secondary: #151D1A;
+  --bg-tertiary: #1F2A26;
+  --navy: #0D1618;
+  --emerald: #0F7A52;
+  --emerald-bright: #1FAD7C;
+  --gold: #D4AF78;
+  --gold-bright: #E8C896;
+  --text-primary: #F5F3EE;
+  --text-secondary: #B8C6C0;
+  --text-tertiary: #7F8D87;
+  --c-border: #232D29;
+  --success: #1FAD7C;
+  --warning: #D4AF78;
+  --danger: #C25C48;
 
-  --radius: 0.5rem;
+  --radius: 0.625rem;
 
   /* shadcn semantic tokens mapped to Convenientia palette */
   --background: var(--bg-primary);
@@ -106,18 +106,29 @@
     background: var(--bg-primary);
     color: var(--text-primary);
     font-size: 15px;
-    line-height: 1.6;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.3px;
   }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold tracking-tight;
+  h1 {
+    @apply text-3xl font-light tracking-tight;
+    color: var(--text-primary);
+  }
+  h2 {
+    @apply text-xl font-light tracking-tight;
+    color: var(--text-primary);
+    letter-spacing: 0.5px;
+  }
+  h3, h4, h5, h6 {
+    @apply font-light tracking-tight;
     color: var(--text-primary);
   }
   .stat-number {
     color: var(--gold);
     font-variant-numeric: tabular-nums;
-    font-size: 2.25rem;
-    font-weight: 700;
+    font-size: 2.5rem;
+    font-weight: 300;
     line-height: 1;
+    letter-spacing: 0.5px;
   }
 }

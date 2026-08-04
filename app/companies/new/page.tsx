@@ -51,7 +51,7 @@ export default function NewCompanyPage() {
   return (
     <>
       <Topbar title="Add Company" />
-      <div className="p-6 max-w-2xl">
+      <div className="p-10 max-w-2xl">
         <form
           onSubmit={handleSubmit}
           className="bg-bg-secondary border border-c-border rounded-lg p-6 space-y-4"

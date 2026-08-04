@@ -8,7 +8,7 @@ export default async function ResearchPage() {
   return (
     <>
       <Topbar title="Vertical Research" />
-      <div className="p-6 max-w-4xl">
+      <div className="p-10 max-w-5xl">
         <p className="text-text-secondary text-sm mb-6 max-w-2xl">
           Your market intelligence library. One page per vertical — pain
           points, regulatory shifts, buyer profiles. Prep here before every

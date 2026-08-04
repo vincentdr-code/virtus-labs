@@ -19,7 +19,7 @@ export default async function VerticalPage({
   return (
     <>
       <Topbar title={v.verticalName} />
-      <div className="p-6 max-w-3xl space-y-5">
+      <div className="p-10 max-w-3xl space-y-6">
         <div className="text-xs text-text-tertiary uppercase tracking-wider">
           Last updated {formatDate(v.lastUpdated)}
         </div>

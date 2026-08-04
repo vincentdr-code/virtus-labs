@@ -31,16 +31,16 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-56 shrink-0 bg-navy border-r border-c-border flex flex-col min-h-screen">
-      <div className="px-6 py-5 border-b border-c-border">
-        <p className="text-gold font-bold text-lg tracking-tight leading-none">
+    <aside className="w-64 shrink-0 bg-bg-primary border-r border-c-border/60 flex flex-col min-h-screen">
+      <div className="px-8 pt-10 pb-8">
+        <p className="text-gold font-light text-lg tracking-[0.25em] leading-none">
           CONVENIENTIA
         </p>
-        <p className="text-text-tertiary text-[10px] mt-1.5 tracking-widest uppercase">
+        <p className="text-text-tertiary text-[10px] mt-2.5 tracking-[0.35em] uppercase font-light">
           Operations
         </p>
       </div>
-      <nav className="flex-1 px-3 py-4 space-y-0.5">
+      <nav className="flex-1 px-5 py-2 space-y-1">
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
           const active =
             pathname === href ||
@@ -49,24 +49,24 @@ export function Sidebar() {
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
+              className={`flex items-center gap-3.5 px-4 py-2.5 rounded-xl text-sm tracking-wide transition-all duration-200 ${
                 active
-                  ? "bg-emerald text-text-primary font-medium"
-                  : "text-text-secondary hover:bg-bg-tertiary hover:text-text-primary"
+                  ? "bg-bg-tertiary text-gold font-medium"
+                  : "text-text-secondary hover:bg-bg-secondary hover:text-text-primary font-light"
               }`}
             >
-              <Icon size={16} />
+              <Icon size={16} strokeWidth={active ? 2 : 1.5} />
               {label}
             </Link>
           );
         })}
       </nav>
-      <div className="px-3 py-4 border-t border-c-border">
+      <div className="px-5 py-6 border-t border-c-border/60">
         <button
           onClick={() => signOut({ callbackUrl: "/login" })}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm text-text-tertiary hover:bg-bg-tertiary hover:text-text-primary transition-colors"
+          className="w-full flex items-center gap-3.5 px-4 py-2.5 rounded-xl text-sm font-light tracking-wide text-text-tertiary hover:bg-bg-secondary hover:text-text-primary transition-all duration-200"
         >
-          <LogOut size={16} />
+          <LogOut size={16} strokeWidth={1.5} />
           Sign Out
         </button>
       </div>
