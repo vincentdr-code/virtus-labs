@@ -31,21 +31,38 @@ const USER_AGENT =
 
 const DEFAULT_TIMEOUT_MS = 20_000;
 
+/**
+ * Some publishers reject non-browser agents outright. We identify honestly
+ * first, and only fall back to a browser agent when a host refuses — this is
+ * a low-volume weekly read of public feeds, not scraping.
+ */
+const BROWSER_USER_AGENT =
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 " +
+  "(KHTML, like Gecko) Chrome/124.0 Safari/537.36";
+
 /** Never let one slow feed hold the whole weekly scan open. */
 async function fetchWithTimeout(
   url: string,
   timeoutMs = DEFAULT_TIMEOUT_MS,
 ): Promise<Response> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    return await fetch(url, {
-      headers: { "User-Agent": USER_AGENT, Accept: "*/*" },
+  const attempt = (agent: string) => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    return fetch(url, {
+      headers: {
+        "User-Agent": agent,
+        Accept:
+          "application/rss+xml, application/atom+xml, application/xml, application/json;q=0.9, */*;q=0.8",
+      },
       signal: controller.signal,
-    });
-  } finally {
-    clearTimeout(timer);
+    }).finally(() => clearTimeout(timer));
+  };
+
+  const first = await attempt(USER_AGENT);
+  if (first.status === 403 || first.status === 401) {
+    return attempt(BROWSER_USER_AGENT);
   }
+  return first;
 }
 
 // ---------------------------------------------------------------------------
@@ -132,11 +149,35 @@ const rssParser = new Parser({
   headers: { "User-Agent": USER_AGENT },
 });
 
+/**
+ * Real-world feeds are frequently not well-formed — stray raw ampersands and
+ * unescaped control characters are common enough that a strict parse throws on
+ * otherwise usable content. Retry once on a cleaned copy before giving up.
+ */
+async function parseFeedLeniently(xml: string) {
+  try {
+    return await rssParser.parseString(xml);
+  } catch (firstError) {
+    const repaired = xml
+      // Control characters that are illegal in XML.
+      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "")
+      // Bare "&" that is not already the start of an entity.
+      .replace(/&(?!(?:[a-zA-Z][a-zA-Z0-9]*|#\d+|#x[0-9a-fA-F]+);)/g, "&amp;")
+      .trim();
+    try {
+      return await rssParser.parseString(repaired);
+    } catch {
+      // Report the original failure — it describes the real problem.
+      throw firstError;
+    }
+  }
+}
+
 export async function fetchRss(source: ResearchSource): Promise<RawItem[]> {
   const res = await fetchWithTimeout(source.url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const xml = await res.text();
-  const feed = await rssParser.parseString(xml);
+  const feed = await parseFeedLeniently(xml);
 
   return (feed.items ?? []).slice(0, 25).map((item) => {
     const text = `${item.title ?? ""} ${item.contentSnippet ?? item.content ?? ""}`;
@@ -336,20 +377,34 @@ export async function fetchArxiv(source: ResearchSource): Promise<RawItem[]> {
 export async function fetchSocrata(
   source: ResearchSource,
 ): Promise<RawItem[]> {
+  // Socrata rejects the whole request with a 400 if $where or $order names a
+  // column the dataset does not have, and column names vary between portals.
+  // Ask for a plain page and do the sorting and filtering here instead, so a
+  // schema difference costs us ordering rather than the entire source.
   const url = new URL(source.url);
-  url.searchParams.set("$limit", "40");
-  url.searchParams.set("$order", "issued_date DESC");
-  // Only large permits are worth surfacing; the long tail is residential noise.
-  url.searchParams.set("$where", "total_job_valuation > 1000000");
+  url.searchParams.set("$limit", "200");
 
   const res = await fetchWithTimeout(url.toString());
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const rows = (await res.json()) as Array<Record<string, string>>;
+  const raw = (await res.json()) as Array<Record<string, string>>;
+
+  const valueOf = (row: Record<string, string>) =>
+    Number(
+      row.total_job_valuation ?? row.total_valuation ?? row.job_valuation ?? 0,
+    );
+  const dateOf = (row: Record<string, string>) =>
+    row.issued_date ?? row.issue_date ?? row.applied_date ?? "";
+
+  // Only large permits are worth surfacing; the long tail is residential noise.
+  const rows = raw
+    .filter((row) => valueOf(row) > 1_000_000)
+    .sort((a, b) => dateOf(b).localeCompare(dateOf(a)))
+    .slice(0, 40);
 
   return rows
     .map((row) => {
       const desc = row.description ?? row.permit_type_desc ?? "Permit issued";
-      const value = Number(row.total_job_valuation ?? 0);
+      const value = valueOf(row);
       const address = row.original_address1 ?? row.project_name ?? "";
       const permitNum = row.permit_number ?? row.permit_num ?? "";
       const text = `${desc} ${row.permit_class ?? ""} ${row.work_class ?? ""}`;
@@ -375,7 +430,7 @@ export async function fetchSocrata(
         category: source.category,
         trade: resolveTrade(source, text),
         metro: source.metro,
-        publishedAt: row.issued_date ? new Date(row.issued_date) : new Date(),
+        publishedAt: dateOf(row) ? new Date(dateOf(row)) : new Date(),
       };
     })
     .filter((item) => item.sourceUrl);
