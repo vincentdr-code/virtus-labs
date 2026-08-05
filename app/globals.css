@@ -73,6 +73,16 @@
 
   --radius: 0.625rem;
 
+  /* Layout tokens — 12-col responsive grid */
+  --grid-columns: 12;
+  --grid-gutter: 1.25rem;
+  --page-pad: 2.5rem;
+
+  /* Three-tier typographic scale (display / heading / body) */
+  --text-display: 2.5rem;
+  --text-heading: 1.25rem;
+  --text-body: 0.9375rem;
+
   /* shadcn semantic tokens mapped to Convenientia palette */
   --background: var(--bg-primary);
   --foreground: var(--text-primary);
@@ -126,9 +136,36 @@
   .stat-number {
     color: var(--gold);
     font-variant-numeric: tabular-nums;
-    font-size: 2.5rem;
+    font-size: var(--text-display);
     font-weight: 300;
     line-height: 1;
     letter-spacing: 0.5px;
+  }
+}
+
+@layer components {
+  /* 12-column responsive page grid — fills the viewport instead of
+     centering a fixed column. Gutters come from --grid-gutter so
+     inter-card space reads as intentional, not leftover margin. */
+  .page-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+    gap: var(--grid-gutter);
+    padding: var(--page-pad);
+    width: 100%;
+    align-content: start;
+  }
+
+  /* Tablet: tighter padding, same 12 cols (spans adapt via col-span-*) */
+  @media (max-width: 1024px) {
+    .page-grid {
+      --page-pad: 1.5rem;
+      --grid-gutter: 1rem;
+    }
+  }
+  @media (max-width: 768px) {
+    .page-grid {
+      --page-pad: 1rem;
+    }
   }
 }

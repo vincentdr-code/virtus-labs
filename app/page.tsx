@@ -1,4 +1,5 @@
 import { Topbar } from "@/components/layout/Topbar";
+import { PageGrid } from "@/components/layout/PageGrid";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
 import { getPipelineStats } from "@/lib/actions/companies";
@@ -21,19 +22,25 @@ export default async function DashboardPage() {
         title="Dashboard"
         action={{ label: "+ Add Company", href: "/companies/new" }}
       />
-      <div className="p-10 space-y-10 max-w-6xl">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+      <PageGrid>
+        <div className="col-span-12 sm:col-span-6 xl:col-span-3">
           <StatCard
             label="Pipeline Value"
             value={formatCurrency(stats.pipelineValue)}
             gold
           />
+        </div>
+        <div className="col-span-12 sm:col-span-6 xl:col-span-3">
           <StatCard
             label="Active Prospects"
             value={stats.activeProspects}
             sub="excluding won/lost/dormant"
           />
+        </div>
+        <div className="col-span-12 sm:col-span-6 xl:col-span-3">
           <StatCard label="Total Companies" value={stats.totalCompanies} />
+        </div>
+        <div className="col-span-12 sm:col-span-6 xl:col-span-3">
           <StatCard
             label="Insights Delivered"
             value={insightsThisMonth}
@@ -41,7 +48,7 @@ export default async function DashboardPage() {
           />
         </div>
 
-        <div>
+        <div className="col-span-12">
           <h2 className="text-[11px] font-medium text-text-tertiary uppercase tracking-[0.2em] mb-5">
             Recent Activity
           </h2>
@@ -49,7 +56,7 @@ export default async function DashboardPage() {
             <ActivityFeed items={recentActivity} />
           </div>
         </div>
-      </div>
+      </PageGrid>
     </>
   );
 }

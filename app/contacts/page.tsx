@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Topbar } from "@/components/layout/Topbar";
+import { PageGrid } from "@/components/layout/PageGrid";
 import { getContacts } from "@/lib/actions/contacts";
 
 export default async function ContactsPage() {
@@ -8,8 +9,8 @@ export default async function ContactsPage() {
   return (
     <>
       <Topbar title="Contacts" />
-      <div className="p-10 max-w-6xl">
-        <div className="bg-bg-secondary/60 border border-c-border/60 rounded-2xl overflow-hidden">
+      <PageGrid>
+        <div className="col-span-12 bg-bg-secondary/60 border border-c-border/60 rounded-2xl overflow-x-auto">
           {contacts.length === 0 ? (
             <p className="text-text-secondary text-sm p-6">
               No contacts yet. Add them from a company&apos;s detail page.
@@ -87,7 +88,7 @@ export default async function ContactsPage() {
             </table>
           )}
         </div>
-      </div>
+      </PageGrid>
     </>
   );
 }

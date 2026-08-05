@@ -1,4 +1,5 @@
 import { Topbar } from "@/components/layout/Topbar";
+import { PageGrid } from "@/components/layout/PageGrid";
 import { getConsultationSessions } from "@/lib/actions/consultation";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
@@ -12,14 +13,14 @@ export default async function ConsultationPage() {
         title="Consultation Sessions"
         action={{ label: "+ New Session", href: "/consultation/new" }}
       />
-      <div className="p-10 max-w-5xl space-y-5">
-        <p className="text-text-secondary text-sm">
+      <PageGrid>
+        <p className="col-span-12 text-text-secondary text-sm max-w-2xl">
           Start a session before a discovery call. The mic listens to the
           client, filters out small talk, and builds a working software
           prototype from their exact words — ready to show when the meeting
           ends.
         </p>
-        <div className="bg-bg-secondary border border-c-border rounded-lg overflow-hidden">
+        <div className="col-span-12 bg-bg-secondary border border-c-border rounded-lg overflow-x-auto">
           {sessions.length === 0 ? (
             <div className="p-8 text-center">
               <p className="text-text-secondary text-sm">
@@ -89,7 +90,7 @@ export default async function ConsultationPage() {
             </table>
           )}
         </div>
-      </div>
+      </PageGrid>
     </>
   );
 }

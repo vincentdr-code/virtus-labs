@@ -1,4 +1,5 @@
 import { Topbar } from "@/components/layout/Topbar";
+import { PageGrid } from "@/components/layout/PageGrid";
 import { getProjects } from "@/lib/actions/projects";
 import { formatCurrency, formatDate } from "@/lib/utils";
 
@@ -18,35 +19,33 @@ export default async function ProjectsPage() {
   return (
     <>
       <Topbar title="Client Projects" />
-      <div className="p-10 max-w-6xl space-y-6">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div className="bg-bg-secondary border border-c-border rounded-lg p-4">
-            <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">
-              Active Projects
-            </p>
-            <p className="text-gold text-2xl font-bold tabular-nums leading-none">
-              {active.length}
-            </p>
-          </div>
-          <div className="bg-bg-secondary border border-c-border rounded-lg p-4">
-            <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">
-              Active Value
-            </p>
-            <p className="text-emerald-bright text-2xl font-bold tabular-nums leading-none">
-              {formatCurrency(totalActiveValue)}
-            </p>
-          </div>
-          <div className="bg-bg-secondary border border-c-border rounded-lg p-4">
-            <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">
-              Total Projects
-            </p>
-            <p className="text-text-primary text-2xl font-bold tabular-nums leading-none">
-              {projects.length}
-            </p>
-          </div>
+      <PageGrid>
+        <div className="col-span-12 sm:col-span-6 lg:col-span-4 bg-bg-secondary border border-c-border rounded-lg p-4">
+          <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">
+            Active Projects
+          </p>
+          <p className="text-gold text-2xl font-bold tabular-nums leading-none">
+            {active.length}
+          </p>
+        </div>
+        <div className="col-span-12 sm:col-span-6 lg:col-span-4 bg-bg-secondary border border-c-border rounded-lg p-4">
+          <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">
+            Active Value
+          </p>
+          <p className="text-emerald-bright text-2xl font-bold tabular-nums leading-none">
+            {formatCurrency(totalActiveValue)}
+          </p>
+        </div>
+        <div className="col-span-12 sm:col-span-6 lg:col-span-4 bg-bg-secondary border border-c-border rounded-lg p-4">
+          <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">
+            Total Projects
+          </p>
+          <p className="text-text-primary text-2xl font-bold tabular-nums leading-none">
+            {projects.length}
+          </p>
         </div>
 
-        <div className="bg-bg-secondary border border-c-border rounded-lg overflow-hidden">
+        <div className="col-span-12 bg-bg-secondary border border-c-border rounded-lg overflow-x-auto">
           {projects.length === 0 ? (
             <p className="text-text-secondary text-sm p-6">
               No projects yet.
@@ -119,7 +118,7 @@ export default async function ProjectsPage() {
             </table>
           )}
         </div>
-      </div>
+      </PageGrid>
     </>
   );
 }

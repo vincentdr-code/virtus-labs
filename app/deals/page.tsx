@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Topbar } from "@/components/layout/Topbar";
+import { PageGrid } from "@/components/layout/PageGrid";
 import { getDeals, getDealsByStage } from "@/lib/actions/deals";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { PipelineValueChart } from "@/components/charts/PipelineValueChart";
@@ -25,37 +26,39 @@ export default async function DealsPage() {
   return (
     <>
       <Topbar title="Deals" />
-      <div className="p-10 max-w-6xl space-y-6">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div className="bg-bg-secondary border border-c-border rounded-lg p-4">
-            <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">
-              Open Pipeline
-            </p>
-            <p className="text-gold text-2xl font-bold tabular-nums leading-none">
-              {formatCurrency(openPipeline)}
-            </p>
-          </div>
-          <div className="bg-bg-secondary border border-c-border rounded-lg p-4">
-            <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">
-              Won
-            </p>
-            <p className="text-emerald-bright text-2xl font-bold tabular-nums leading-none">
-              {formatCurrency(won)}
-            </p>
-          </div>
-          <div className="bg-bg-secondary border border-c-border rounded-lg p-4">
-            <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">
-              Active Deals
-            </p>
-            <p className="text-text-primary text-2xl font-bold tabular-nums leading-none">
-              {deals.filter((d) => !["WON", "LOST"].includes(d.stage)).length}
-            </p>
-          </div>
+      <PageGrid>
+        <div className="col-span-12 sm:col-span-6 lg:col-span-4 bg-bg-secondary border border-c-border rounded-lg p-4">
+          <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">
+            Open Pipeline
+          </p>
+          <p className="text-gold text-2xl font-bold tabular-nums leading-none">
+            {formatCurrency(openPipeline)}
+          </p>
+        </div>
+        <div className="col-span-12 sm:col-span-6 lg:col-span-4 bg-bg-secondary border border-c-border rounded-lg p-4">
+          <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">
+            Won
+          </p>
+          <p className="text-emerald-bright text-2xl font-bold tabular-nums leading-none">
+            {formatCurrency(won)}
+          </p>
+        </div>
+        <div className="col-span-12 sm:col-span-6 lg:col-span-4 bg-bg-secondary border border-c-border rounded-lg p-4">
+          <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">
+            Active Deals
+          </p>
+          <p className="text-text-primary text-2xl font-bold tabular-nums leading-none">
+            {deals.filter((d) => !["WON", "LOST"].includes(d.stage)).length}
+          </p>
         </div>
 
-        {chartData.length > 0 && <PipelineValueChart data={chartData} />}
+        {chartData.length > 0 && (
+          <div className="col-span-12">
+            <PipelineValueChart data={chartData} />
+          </div>
+        )}
 
-        <div className="bg-bg-secondary border border-c-border rounded-lg overflow-hidden">
+        <div className="col-span-12 bg-bg-secondary border border-c-border rounded-lg overflow-x-auto">
           {deals.length === 0 ? (
             <p className="text-text-secondary text-sm p-6">
               No deals yet. Add one from a company&apos;s detail page.
@@ -120,7 +123,7 @@ export default async function DealsPage() {
             </table>
           )}
         </div>
-      </div>
+      </PageGrid>
     </>
   );
 }
