@@ -39,7 +39,10 @@ How it works:
 
 Requires `ANTHROPIC_API_KEY` in `.env` (get one at https://console.anthropic.com).
 
-## Setup
+## Setup (local development)
+
+This runs the app on your own machine against a local SQLite file — it is
+not how production is served. For that, see **Deployment** below.
 
 ```bash
 npm install
@@ -57,12 +60,9 @@ Open http://localhost:3000 and sign in with your `ADMIN_USERNAME` / `ADMIN_PASSW
 
 ## Deployment
 
-Two deployments exist for this app:
-
-### AWS EC2 (t2.micro) — live at virtus-labs.duckdns.org
-
-Runs alongside the Cosmas project on the same existing t2.micro, behind nginx
-with a Let's Encrypt certificate, as a systemd service.
+Live at `https://virtus-labs.duckdns.org`, running on the existing AWS t2.micro
+EC2 instance that also runs the Cosmas project, behind nginx with a Let's
+Encrypt certificate, as a systemd service.
 
 ```bash
 # On the EC2 box (Ubuntu, user: ubuntu)
@@ -103,50 +103,6 @@ sudo systemctl restart virtus-labs
 See `DEPLOYMENT_LOG.md` for the full walkthrough of this deployment, including
 issues hit and how they were fixed.
 
-### Oracle Cloud Always Free ($0)
-
-The app also runs 24/7 on Oracle's Always Free tier (VM.Standard.E2.1.Micro —
-1 OCPU, 1 GB RAM, never expires) with a Cloudflare Tunnel providing the public
-HTTPS URL.
-
-```bash
-# On the Oracle VM (Ubuntu 22.04, user: ubuntu)
-sudo apt-get update
-curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash -
-sudo apt-get install -y nodejs git
-sudo npm install -g pm2
-
-git clone git@github.com:vincentdr-code/virtus-labs.git ~/virtus-labs
-cd ~/virtus-labs
-nano .env          # production values; NEXTAUTH_URL = public tunnel hostname
-npm install
-npx prisma migrate deploy
-npx prisma db seed
-npm run build
-pm2 start npm --name "virtus-labs" -- start
-pm2 save && pm2 startup
-
-# Cloudflare Tunnel as a system service
-curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o ~/cloudflared
-chmod +x ~/cloudflared && sudo mv ~/cloudflared /usr/local/bin/cloudflared
-cloudflared tunnel login
-cloudflared tunnel create virtus-labs
-# write ~/.cloudflared/config.yml (tunnel id + ingress -> http://localhost:3000)
-sudo cloudflared service install
-sudo systemctl enable --now cloudflared
-```
-
-Future deploys: SSH in and run `~/deploy.sh` (git pull, install, migrate, build, pm2 restart).
-
-#### Alternative: run from this machine
-
-```powershell
-winget install --id Cloudflare.cloudflared
-cloudflared tunnel login
-cloudflared tunnel create virtus-labs
-.\start.ps1
-```
-
 ## Stack
 
-Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · shadcn/ui · Prisma 7 · SQLite · NextAuth.js v5 (Credentials) · Recharts · Anthropic Claude API · Web Speech API · nginx · Let's Encrypt · Cloudflare Tunnel · AWS EC2 · Oracle Cloud Always Free
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · shadcn/ui · Prisma 7 · SQLite · NextAuth.js v5 (Credentials) · Recharts · Anthropic Claude API · Web Speech API · nginx · Let's Encrypt · AWS EC2
