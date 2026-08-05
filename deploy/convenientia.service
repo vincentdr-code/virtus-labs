@@ -1,0 +1,20 @@
+# systemd unit for Convenientia Ops (Next.js)
+# Install: sudo cp deploy/convenientia.service /etc/systemd/system/
+#          sudo systemctl daemon-reload && sudo systemctl enable --now convenientia
+[Unit]
+Description=Convenientia Ops dashboard (Next.js)
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/convenientia-ops
+# .env in the working directory is read by Next.js at startup
+ExecStart=/usr/bin/npm start
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+Environment=PORT=3100
+
+[Install]
+WantedBy=multi-user.target

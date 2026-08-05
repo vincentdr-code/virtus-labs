@@ -4,6 +4,10 @@ import { getConsultationSessions } from "@/lib/actions/consultation";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 
+// Render on demand so the dashboard always shows live data,
+// not values frozen at build time.
+export const dynamic = "force-dynamic";
+
 export default async function ConsultationPage() {
   const sessions = await getConsultationSessions();
 

@@ -33,5 +33,9 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  // manifest + icons stay public so the PWA can be installed from the
+  // login screen; everything else remains behind auth.
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|manifest.webmanifest|icons/).*)",
+  ],
 };

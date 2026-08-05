@@ -14,12 +14,14 @@ interface DealPoint {
   value: number;
 }
 
+// Token references, not literals — the chart follows the palette in
+// globals.css instead of drifting on its own copy of the colors.
 const STAGE_COLORS: Record<string, string> = {
-  DISCOVERY: "#6B7D75",
-  SCOPING: "#A8B8B0",
-  PROPOSAL_SENT: "#C9A24B",
-  NEGOTIATION: "#E4C878",
-  WON: "#16A374",
+  DISCOVERY: "var(--text-tertiary)",
+  SCOPING: "var(--text-secondary)",
+  PROPOSAL_SENT: "var(--gold)",
+  NEGOTIATION: "var(--gold-bright)",
+  WON: "var(--emerald-bright)",
 };
 
 const STAGE_LABELS: Record<string, string> = {
@@ -48,23 +50,25 @@ export function PipelineValueChart({ data }: { data: DealPoint[] }) {
         >
           <XAxis
             dataKey="label"
-            tick={{ fill: "#6B7D75", fontSize: 11 }}
+            tick={{ fill: "var(--text-tertiary)", fontSize: 11 }}
             axisLine={false}
             tickLine={false}
           />
           <YAxis
-            tick={{ fill: "#6B7D75", fontSize: 11 }}
+            tick={{ fill: "var(--text-tertiary)", fontSize: 11 }}
             axisLine={false}
             tickLine={false}
             tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
           />
           <Tooltip
-            cursor={{ fill: "rgba(30,61,51,0.4)" }}
+            cursor={{
+              fill: "color-mix(in srgb, var(--bg-tertiary) 40%, transparent)",
+            }}
             contentStyle={{
-              background: "#0F2B24",
-              border: "1px solid #1E3D33",
+              background: "var(--bg-secondary)",
+              border: "1px solid var(--c-border)",
               borderRadius: 6,
-              color: "#F2F0E8",
+              color: "var(--text-primary)",
               fontSize: 12,
             }}
             formatter={(value) => [
@@ -74,7 +78,10 @@ export function PipelineValueChart({ data }: { data: DealPoint[] }) {
           />
           <Bar dataKey="value" radius={[4, 4, 0, 0]}>
             {chartData.map((d) => (
-              <Cell key={d.stage} fill={STAGE_COLORS[d.stage] ?? "#1E3D33"} />
+              <Cell
+                key={d.stage}
+                fill={STAGE_COLORS[d.stage] ?? "var(--bg-tertiary)"}
+              />
             ))}
           </Bar>
         </BarChart>

@@ -12,6 +12,20 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Convenientia Ops",
   description: "Internal operations dashboard",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Convenientia",
+  },
+  icons: {
+    icon: "/icons/icon-192.png",
+    apple: "/icons/icon-192.png",
+  },
+};
+
+export const viewport = {
+  themeColor: "#0F1513",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

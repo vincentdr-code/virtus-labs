@@ -3,6 +3,10 @@ import { PageGrid } from "@/components/layout/PageGrid";
 import { VerticalCard } from "@/components/research/VerticalCard";
 import { getVerticals } from "@/lib/actions/research";
 
+// Render on demand so the dashboard always shows live data,
+// not values frozen at build time.
+export const dynamic = "force-dynamic";
+
 export default async function ResearchPage() {
   const verticals = await getVerticals();
 

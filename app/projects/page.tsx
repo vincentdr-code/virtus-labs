@@ -3,6 +3,10 @@ import { PageGrid } from "@/components/layout/PageGrid";
 import { getProjects } from "@/lib/actions/projects";
 import { formatCurrency, formatDate } from "@/lib/utils";
 
+// Render on demand so the dashboard always shows live data,
+// not values frozen at build time.
+export const dynamic = "force-dynamic";
+
 const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
   SCOPING: { label: "Scoping", color: "text-text-secondary" },
   ACTIVE: { label: "Active", color: "text-emerald-bright" },

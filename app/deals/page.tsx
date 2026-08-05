@@ -5,6 +5,10 @@ import { getDeals, getDealsByStage } from "@/lib/actions/deals";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { PipelineValueChart } from "@/components/charts/PipelineValueChart";
 
+// Render on demand so the dashboard always shows live data,
+// not values frozen at build time.
+export const dynamic = "force-dynamic";
+
 const STAGE_CONFIG: Record<string, { label: string; color: string }> = {
   DISCOVERY: { label: "Discovery", color: "text-text-secondary" },
   SCOPING: { label: "Scoping", color: "text-text-secondary" },

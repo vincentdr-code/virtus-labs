@@ -3,6 +3,10 @@ import { Topbar } from "@/components/layout/Topbar";
 import { PageGrid } from "@/components/layout/PageGrid";
 import { getContacts } from "@/lib/actions/contacts";
 
+// Render on demand so the dashboard always shows live data,
+// not values frozen at build time.
+export const dynamic = "force-dynamic";
+
 export default async function ContactsPage() {
   const contacts = await getContacts();
 

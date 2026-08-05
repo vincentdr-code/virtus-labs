@@ -9,6 +9,10 @@ import {
 } from "@/lib/actions/interactions";
 import { formatCurrency } from "@/lib/utils";
 
+// Render on demand so the dashboard always shows live data,
+// not values frozen at build time.
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   const [stats, recentActivity, insightsThisMonth] = await Promise.all([
     getPipelineStats(),
