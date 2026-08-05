@@ -34,7 +34,14 @@ All free. No paid subscriptions, no API keys required.
 | Regulatory | Federal Register API, EPA, OSHA | Primary record of an actual rule change, not commentary about one |
 | Research journal | OpenAlex (7 queries), arXiv | OpenAlex indexes essentially all scholarly work and is free with no key — this is what makes journal coverage viable without subscriptions |
 | Government data | City of Austin permit open data | Permits filed are a leading indicator of which trades are about to be busy |
-| Trade press | ENR, Construction Dive, ACHR News, EC&M, PM, ArchDaily, BD+C, Utility Dive, Smart Cities Dive, FacilitiesNet | Fastest to surface a shift; covers the contractor-business angle |
+| Trade press | ENR, Construction Dive, ACHR News, Plumbing & Mechanical, ArchDaily, Utility Dive, Smart Cities Dive | Fastest to surface a shift; covers the contractor-business angle |
+
+Four entries (EC&M, BD+C, EPA Newsroom, FacilitiesNet) are present but
+`enabled: false` — probing found no working feed path. They are kept in the
+registry rather than deleted so the gap is visible and re-probing is cheap.
+
+If a source starts failing, `npm run discover:feeds` probes common feed
+conventions per publisher and prints the real URL.
 
 Add or disable sources in `lib/research/sources.ts`.
 

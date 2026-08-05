@@ -382,35 +382,47 @@ export async function fetchSocrata(
   // Ask for a plain page and do the sorting and filtering here instead, so a
   // schema difference costs us ordering rather than the entire source.
   const url = new URL(source.url);
-  url.searchParams.set("$limit", "200");
+  // Commercial permits are a small slice of this dataset, so the page has to
+  // be large enough that filtering does not leave it empty.
+  url.searchParams.set("$limit", "800");
 
   const res = await fetchWithTimeout(url.toString());
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const raw = (await res.json()) as Array<Record<string, string>>;
+  const raw = (await res.json()) as Array<SocrataPermitRow>;
 
-  const valueOf = (row: Record<string, string>) =>
-    Number(
-      row.total_job_valuation ?? row.total_valuation ?? row.job_valuation ?? 0,
-    );
-  const dateOf = (row: Record<string, string>) =>
-    row.issued_date ?? row.issue_date ?? row.applied_date ?? "";
+  // Socrata omits null fields per row rather than emitting them, so a column
+  // can be present on some rows and absent on others. Every read here has a
+  // fallback for that reason.
+  const dateOf = (row: SocrataPermitRow) =>
+    row.issue_date ?? row.issued_date ?? row.applieddate ?? "";
+  const valueOf = (row: SocrataPermitRow) =>
+    Number(row.total_job_valuation ?? row.total_valuation ?? 0);
 
-  // Only large permits are worth surfacing; the long tail is residential noise.
   const rows = raw
-    .filter((row) => valueOf(row) > 1_000_000)
+    // Residential permits — irrigation, re-roofs, single-family work — are the
+    // bulk of this dataset and are not the market being tracked.
+    .filter((row) => {
+      const cls = `${row.permit_class_mapped ?? ""} ${row.permit_class ?? ""}`;
+      return /commercial/i.test(cls);
+    })
     .sort((a, b) => dateOf(b).localeCompare(dateOf(a)))
     .slice(0, 40);
 
   return rows
     .map((row) => {
       const desc = row.description ?? row.permit_type_desc ?? "Permit issued";
+      const workClass = row.work_class ?? "";
       const value = valueOf(row);
-      const address = row.original_address1 ?? row.project_name ?? "";
-      const permitNum = row.permit_number ?? row.permit_num ?? "";
-      const text = `${desc} ${row.permit_class ?? ""} ${row.work_class ?? ""}`;
+      const address = [row.original_address1, row.original_city]
+        .filter(Boolean)
+        .join(", ");
+      const permitNum = row.permit_number ?? "";
+      const text = `${desc} ${row.permit_type_desc ?? ""} ${workClass}`;
       return {
         headline: cleanText(
-          `${row.permit_class ?? "Permit"}: ${desc}`.trim(),
+          [row.permit_type_desc, workClass && `(${workClass})`, "—", desc]
+            .filter(Boolean)
+            .join(" "),
           240,
         ),
         summary: cleanText(
@@ -418,13 +430,18 @@ export async function fetchSocrata(
             address && `Site: ${address}.`,
             value > 0 && `Declared valuation $${value.toLocaleString()}.`,
             permitNum && `Permit ${permitNum}.`,
+            row.status_current && `Status: ${row.status_current}.`,
           ]
             .filter(Boolean)
             .join(" "),
         ),
-        sourceUrl: permitNum
-          ? `${url.origin}${url.pathname.replace(".json", "")}?permit_number=${encodeURIComponent(permitNum)}`
-          : "",
+        // The dataset carries a real permalink per row; prefer it over a
+        // hand-built query URL that may not resolve.
+        sourceUrl:
+          row.link?.url ??
+          (permitNum
+            ? `${url.origin}${url.pathname.replace(".json", "")}?permit_number=${encodeURIComponent(permitNum)}`
+            : ""),
         sourceName: source.name,
         sourceTier: source.tier,
         category: source.category,
@@ -434,6 +451,25 @@ export async function fetchSocrata(
       };
     })
     .filter((item) => item.sourceUrl);
+}
+
+/** Shape of the Austin issued-permits dataset, as returned by Socrata. */
+interface SocrataPermitRow {
+  permit_number?: string;
+  permit_type_desc?: string;
+  permit_class_mapped?: string;
+  permit_class?: string;
+  work_class?: string;
+  description?: string;
+  original_address1?: string;
+  original_city?: string;
+  status_current?: string;
+  issue_date?: string;
+  issued_date?: string;
+  applieddate?: string;
+  total_job_valuation?: string;
+  total_valuation?: string;
+  link?: { url?: string };
 }
 
 // ---------------------------------------------------------------------------

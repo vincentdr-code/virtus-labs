@@ -99,6 +99,7 @@ const REGULATORY: ResearchSource[] = [
     category: "regulatory",
     trades: ["environmental"],
     metro: "national",
+    enabled: false, // no working feed path found when probed
   },
   {
     id: "osha-news",
@@ -248,7 +249,7 @@ const TRADE_PRESS: ResearchSource[] = [
     id: "enr",
     name: "Engineering News-Record",
     kind: "rss",
-    url: "https://www.enr.com/rss/all-news",
+    url: "https://www.enr.com/rss/articles",
     tier: "TRADE_PRESS",
     category: "market",
     trades: "all",
@@ -258,7 +259,7 @@ const TRADE_PRESS: ResearchSource[] = [
     id: "achr-news",
     name: "ACHR News (HVACR)",
     kind: "rss",
-    url: "https://www.achrnews.com/rss/all-news",
+    url: "https://www.achrnews.com/rss/articles",
     tier: "TRADE_PRESS",
     category: "market",
     trades: ["hvac", "mechanical"],
@@ -273,12 +274,13 @@ const TRADE_PRESS: ResearchSource[] = [
     category: "market",
     trades: ["electrical"],
     metro: "national",
+    enabled: false, // no working feed path found when probed
   },
   {
     id: "pm-engineer",
     name: "Plumbing & Mechanical",
     kind: "rss",
-    url: "https://www.pmmag.com/rss/all-news",
+    url: "https://www.pmmag.com/rss/articles",
     tier: "TRADE_PRESS",
     category: "market",
     trades: ["plumbing", "mechanical"],
@@ -303,6 +305,7 @@ const TRADE_PRESS: ResearchSource[] = [
     category: "market",
     trades: ["architecture", "civil", "mechanical"],
     metro: "national",
+    enabled: false, // no working feed path found when probed
   },
   {
     id: "smart-cities-dive",
@@ -333,6 +336,7 @@ const TRADE_PRESS: ResearchSource[] = [
     category: "tech",
     trades: ["hvac", "mechanical", "electrical"],
     metro: "national",
+    enabled: false, // no working feed path found when probed
   },
 ];
 
