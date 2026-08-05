@@ -34,7 +34,7 @@ export function Sidebar() {
     <aside className="w-64 shrink-0 bg-navy border-r border-c-border flex flex-col min-h-screen">
       <div className="px-8 pt-9 pb-7 border-b border-c-border">
         <p className="text-gold font-bold text-xl tracking-[0.12em] leading-none">
-          CONVENIENTIA
+          VIRTUS LABS
         </p>
         <p className="text-emerald-bright text-[11px] mt-2.5 tracking-[0.3em] uppercase font-semibold">
           Operations

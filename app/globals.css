@@ -11,7 +11,7 @@
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
 
-  /* Convenientia palette */
+  /* Virtus Labs palette */
   --color-bg-primary: var(--bg-primary);
   --color-bg-secondary: var(--bg-secondary);
   --color-bg-tertiary: var(--bg-tertiary);
@@ -54,7 +54,7 @@
 }
 
 :root {
-  /* Convenientia palette — vivid emerald + rich gold */
+  /* Virtus Labs palette — vivid emerald + rich gold */
   --bg-primary: #0A1613;
   --bg-secondary: #101F1A;
   --bg-tertiary: #172C25;
@@ -73,7 +73,7 @@
 
   --radius: 0.625rem;
 
-  /* shadcn semantic tokens mapped to Convenientia palette */
+  /* shadcn semantic tokens mapped to Virtus Labs palette */
   --background: var(--bg-primary);
   --foreground: var(--text-primary);
   --card: var(--bg-secondary);

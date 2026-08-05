@@ -1,6 +1,6 @@
-# start.ps1 — start Convenientia Ops + Cloudflare Tunnel
+# start.ps1 — start Virtus Labs Ops + Cloudflare Tunnel
 # Usage: .\start.ps1                    (quick tunnel, random URL)
-#        .\start.ps1 -Tunnel convenientia-ops   (named tunnel, requires setup)
+#        .\start.ps1 -Tunnel virtus-labs-ops   (named tunnel, requires setup)
 
 param(
     [string]$Tunnel = "",

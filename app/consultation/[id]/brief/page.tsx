@@ -47,7 +47,7 @@ export default async function ConsultationBriefPage({
         <div className="flex items-start justify-between">
           <div>
             <p className="text-gold font-bold text-xs uppercase tracking-widest">
-              CONVENIENTIA
+              VIRTUS LABS
             </p>
             <h1 className="text-2xl font-bold text-text-primary mt-1">
               {session.title}

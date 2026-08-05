@@ -160,7 +160,7 @@ async function main() {
   await prisma.project.create({
     data: {
       companyName: "Internal",
-      name: "Convenientia Ops Dashboard",
+      name: "Virtus Labs Ops Dashboard",
       description: "This internal ops tool — pipeline, research, meeting prep.",
       status: "ACTIVE",
       startDate: new Date("2026-08-01"),

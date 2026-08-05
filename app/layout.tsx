@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Convenientia Ops",
+  title: "Virtus Labs Ops",
   description: "Internal operations dashboard",
 };
 

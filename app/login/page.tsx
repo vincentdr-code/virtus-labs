@@ -33,7 +33,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
           <p className="text-gold font-bold text-3xl tracking-[0.15em] leading-none">
-            CONVENIENTIA
+            VIRTUS LABS
           </p>
           <p className="text-emerald-bright text-xs mt-3 uppercase tracking-[0.35em] font-semibold">
             Operations
