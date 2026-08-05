@@ -9,7 +9,7 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:e2e": "node scripts/e2e.mjs",
-    "verify:sources": "node scripts/verify-sources.mjs",
+    "verify:sources": "tsx scripts/verify-sources.ts",
     "research:scan": "tsx scripts/run-scan.ts",
     "seed:research": "tsx prisma/seed-research.ts",
     "test:all": "npm run lint && npm run test && npm run test:e2e"
