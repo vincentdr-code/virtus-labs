@@ -12,7 +12,7 @@ export default async function PipelinePage() {
         action={{ label: "+ Add Company", href: "/companies/new" }}
       />
       <div className="p-10">
-        <div className="bg-bg-secondary/60 border border-c-border/60 rounded-2xl overflow-hidden">
+        <div className="bg-bg-secondary border border-c-border rounded-2xl overflow-hidden">
           <PipelineTable companies={companies} />
         </div>
       </div>

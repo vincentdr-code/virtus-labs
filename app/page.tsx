@@ -42,10 +42,10 @@ export default async function DashboardPage() {
         </div>
 
         <div>
-          <h2 className="text-[11px] font-medium text-text-tertiary uppercase tracking-[0.2em] mb-5">
+          <h2 className="text-xs font-semibold text-text-secondary uppercase tracking-[0.15em] mb-5">
             Recent Activity
           </h2>
-          <div className="bg-bg-secondary/60 border border-c-border/60 rounded-2xl p-7">
+          <div className="bg-bg-secondary border border-c-border rounded-2xl p-7">
             <ActivityFeed items={recentActivity} />
           </div>
         </div>

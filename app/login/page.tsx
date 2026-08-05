@@ -31,17 +31,20 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen w-full bg-bg-primary flex items-center justify-center p-6">
       <div className="w-full max-w-md">
-        <div className="text-center mb-12">
-          <p className="text-gold font-light text-3xl tracking-[0.3em] leading-none">
+        <div className="text-center mb-10">
+          <p className="text-gold font-bold text-3xl tracking-[0.15em] leading-none">
             CONVENIENTIA
           </p>
-          <p className="text-text-tertiary text-[10px] mt-4 uppercase tracking-[0.45em] font-light">
+          <p className="text-emerald-bright text-xs mt-3 uppercase tracking-[0.35em] font-semibold">
             Operations
           </p>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-bg-secondary border border-c-border rounded-2xl p-8 space-y-5"
+        >
           <div>
-            <label className="text-[11px] text-text-tertiary mb-2.5 block uppercase tracking-[0.2em] font-light">
+            <label className="text-xs text-text-secondary mb-2 block uppercase tracking-[0.15em] font-semibold">
               Username
             </label>
             <Input
@@ -49,11 +52,11 @@ export default function LoginPage() {
               autoComplete="username"
               required
               autoFocus
-              className="bg-bg-secondary/60 border-c-border/60 text-text-primary h-12 rounded-xl px-4 focus-visible:border-gold/50"
+              className="bg-bg-primary border-c-border text-text-primary h-12 rounded-xl px-4 text-base focus-visible:border-emerald"
             />
           </div>
           <div>
-            <label className="text-[11px] text-text-tertiary mb-2.5 block uppercase tracking-[0.2em] font-light">
+            <label className="text-xs text-text-secondary mb-2 block uppercase tracking-[0.15em] font-semibold">
               Password
             </label>
             <Input
@@ -61,18 +64,18 @@ export default function LoginPage() {
               type="password"
               autoComplete="current-password"
               required
-              className="bg-bg-secondary/60 border-c-border/60 text-text-primary h-12 rounded-xl px-4 focus-visible:border-gold/50"
+              className="bg-bg-primary border-c-border text-text-primary h-12 rounded-xl px-4 text-base focus-visible:border-emerald"
             />
           </div>
           {error && (
-            <p className="text-red-400 text-xs bg-danger/10 border border-danger/30 rounded-xl px-4 py-3">
+            <p className="text-red-400 text-sm bg-danger/10 border border-danger/30 rounded-xl px-4 py-3">
               {error}
             </p>
           )}
           <button
             type="submit"
             disabled={pending}
-            className="w-full h-12 border border-gold/50 text-gold hover:bg-gold hover:text-bg-primary font-medium text-sm tracking-[0.15em] uppercase rounded-full disabled:opacity-60 transition-all duration-300 mt-2"
+            className="w-full h-12 bg-gold text-bg-primary hover:bg-gold-bright font-bold text-sm tracking-[0.12em] uppercase rounded-full disabled:opacity-60 transition-colors shadow-lg shadow-gold/20 mt-1"
           >
             {pending ? "Signing in..." : "Sign In"}
           </button>

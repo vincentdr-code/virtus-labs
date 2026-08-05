@@ -7,18 +7,18 @@ interface StatCardProps {
 
 export function StatCard({ label, value, sub, gold = false }: StatCardProps) {
   return (
-    <div className="bg-bg-secondary/60 border border-c-border/60 rounded-2xl p-7 hover:border-gold/30 transition-colors duration-300">
-      <p className="text-text-tertiary text-[11px] font-medium uppercase tracking-[0.18em] mb-4">
+    <div className="bg-bg-secondary border border-c-border rounded-2xl p-7 hover:border-emerald/50 transition-colors duration-300">
+      <p className="text-text-tertiary text-xs font-semibold uppercase tracking-[0.15em] mb-4">
         {label}
       </p>
       <p
-        className={`text-4xl font-light tabular-nums leading-none tracking-tight ${
-          gold ? "text-gold" : "text-text-primary"
+        className={`text-4xl font-bold tabular-nums leading-none tracking-tight ${
+          gold ? "text-gold" : "text-emerald-bright"
         }`}
       >
         {value}
       </p>
-      {sub && <p className="text-text-tertiary text-xs mt-3 font-light">{sub}</p>}
+      {sub && <p className="text-text-secondary text-sm mt-3">{sub}</p>}
     </div>
   );
 }

@@ -54,22 +54,22 @@
 }
 
 :root {
-  /* Convenientia refined palette — refined & classy */
-  --bg-primary: #0F1513;
-  --bg-secondary: #151D1A;
-  --bg-tertiary: #1F2A26;
-  --navy: #0D1618;
-  --emerald: #0F7A52;
-  --emerald-bright: #1FAD7C;
-  --gold: #D4AF78;
-  --gold-bright: #E8C896;
-  --text-primary: #F5F3EE;
-  --text-secondary: #B8C6C0;
-  --text-tertiary: #7F8D87;
-  --c-border: #232D29;
-  --success: #1FAD7C;
-  --warning: #D4AF78;
-  --danger: #C25C48;
+  /* Convenientia palette — vivid emerald + rich gold */
+  --bg-primary: #0A1613;
+  --bg-secondary: #101F1A;
+  --bg-tertiary: #172C25;
+  --navy: #0C1A16;
+  --emerald: #00C878;
+  --emerald-bright: #2BE895;
+  --gold: #E8B54A;
+  --gold-bright: #FFD273;
+  --text-primary: #F7F5EF;
+  --text-secondary: #B8CCC2;
+  --text-tertiary: #7E948A;
+  --c-border: #22463A;
+  --success: #2BE895;
+  --warning: #E8B54A;
+  --danger: #E0604A;
 
   --radius: 0.625rem;
 
@@ -105,30 +105,19 @@
   body {
     background: var(--bg-primary);
     color: var(--text-primary);
-    font-size: 15px;
-    line-height: 1.7;
+    font-size: 16px;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
-    letter-spacing: 0.3px;
   }
-  h1 {
-    @apply text-3xl font-light tracking-tight;
-    color: var(--text-primary);
-  }
-  h2 {
-    @apply text-xl font-light tracking-tight;
-    color: var(--text-primary);
-    letter-spacing: 0.5px;
-  }
-  h3, h4, h5, h6 {
-    @apply font-light tracking-tight;
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
     color: var(--text-primary);
   }
   .stat-number {
     color: var(--gold);
     font-variant-numeric: tabular-nums;
-    font-size: 2.5rem;
-    font-weight: 300;
+    font-size: 2.75rem;
+    font-weight: 700;
     line-height: 1;
-    letter-spacing: 0.5px;
   }
 }
