@@ -112,7 +112,8 @@ try {
     }
   }
 
-  // --- sidebar collapse/expand ---
+  // --- sidebar collapse/expand (desktop) ---
+  await page.setViewportSize({ width: 1600, height: 900 });
   await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
   await page.click('button[title="Collapse sidebar"]');
   await page.waitForTimeout(350);
@@ -131,10 +132,14 @@ try {
     fail("sidebar expands back", `width ${expandedWidth}px`);
   }
 
-  // --- no horizontal scroll at 375px on key pages ---
-  await page.setViewportSize({ width: 375, height: 800 });
+  // --- mobile layout at 375px ---
+  // The page not scrolling horizontally is NOT sufficient: a sidebar that
+  // eats most of the viewport leaves content squeezed while the page
+  // itself still reports no overflow. Assert on usable content width too.
+  await page.setViewportSize({ width: 375, height: 812 });
   for (const path of ["/", "/contacts", "/deals", "/cosmas"]) {
     await page.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
+
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth - document.documentElement.clientWidth
     );
@@ -143,6 +148,51 @@ try {
     } else {
       fail(`${path} has no horizontal page scroll at 375px`, `${overflow}px overflow`);
     }
+
+    // main must get essentially the whole viewport on mobile
+    const mainWidth = await page.locator("main").evaluate((el) => el.getBoundingClientRect().width);
+    if (mainWidth >= 355) {
+      ok(`${path} gives main the full width at 375px (${Math.round(mainWidth)}px)`);
+    } else {
+      fail(
+        `${path} gives main the full width at 375px`,
+        `main is only ${Math.round(mainWidth)}px — sidebar is stealing the viewport`
+      );
+    }
+  }
+
+  // --- mobile drawer opens, navigates, and closes ---
+  await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
+  const railHidden = await page
+    .locator('[data-testid="sidebar"]')
+    .evaluate((el) => el.getBoundingClientRect().right <= 1);
+  if (railHidden) {
+    ok("sidebar is off-canvas at 375px");
+  } else {
+    fail("sidebar is off-canvas at 375px", "it is occupying the viewport");
+  }
+
+  await page.click('button[title="Open navigation"]');
+  await page.waitForTimeout(350);
+  const drawerVisible = await page
+    .locator('[data-testid="sidebar"]')
+    .evaluate((el) => el.getBoundingClientRect().left >= -1);
+  if (drawerVisible) {
+    ok("hamburger opens the mobile drawer");
+  } else {
+    fail("hamburger opens the mobile drawer");
+  }
+
+  await page.click('a[href="/deals"]');
+  await page.waitForURL(`${BASE}/deals`, { timeout: 15000 });
+  await page.waitForTimeout(400);
+  const drawerClosedAfterNav = await page
+    .locator('[data-testid="sidebar"]')
+    .evaluate((el) => el.getBoundingClientRect().right <= 1);
+  if (drawerClosedAfterNav) {
+    ok("drawer closes after navigating from it");
+  } else {
+    fail("drawer closes after navigating from it", "drawer stayed open over the page");
   }
 
   await page.close();

@@ -7,7 +7,8 @@ interface TopbarProps {
 
 export function Topbar({ title, action }: TopbarProps) {
   return (
-    <header className="h-20 border-b border-c-border/60 bg-bg-primary/80 backdrop-blur flex items-center justify-between px-10 shrink-0">
+    // pl-16 on mobile leaves room for the sidebar's floating hamburger.
+    <header className="h-20 border-b border-c-border/60 bg-bg-primary/80 backdrop-blur flex items-center justify-between gap-4 pl-16 pr-4 lg:px-10 shrink-0">
       <h1 className="text-xl font-light tracking-wide text-text-primary">
         {title}
       </h1>
