@@ -16,7 +16,14 @@ import {
   scoreImportance,
 } from "./scoring";
 import { extractJson } from "./ingest";
-import { groupByMetro, renderDigestText, renderDigestHtml } from "./digest";
+import {
+  groupByMetro,
+  renderDigestText,
+  renderDigestHtml,
+  MAX_PER_METRO,
+  MAX_NATIONAL,
+  type DigestItem,
+} from "./digest";
 import { ENABLED_SOURCES, SOURCES } from "./sources";
 import { METROS, TRADES, isTradeSlug, isMetroSlug } from "./taxonomy";
 import type { ResearchSource } from "./sources";
@@ -480,5 +487,58 @@ describe("digest", () => {
   it("handles an empty week without crashing", () => {
     expect(renderDigestText([])).toContain("No new items");
     expect(renderDigestHtml([])).toContain("No new items");
+  });
+});
+
+describe("digest caps", () => {
+  function bulk(metro: string, n: number, importance = 1): DigestItem[] {
+    return Array.from({ length: n }, (_, i) => ({
+      id: `${metro}-${i}`,
+      trade: "hvac",
+      metro,
+      headline: `Item ${i}`,
+      summary: "s",
+      sourceUrl: `https://example.com/${metro}/${i}`,
+      sourceName: "Src",
+      sourceTier: "TRADE_PRESS",
+      category: "market",
+      importance,
+      publishedAt: new Date(2026, 0, 1 + i),
+    }));
+  }
+
+  it("caps a metro section and reports the overflow", () => {
+    const groups = groupByMetro(bulk("miami", 40));
+    const miami = groups.find((g) => g.slug === "miami")!;
+    expect(miami.items).toHaveLength(MAX_PER_METRO);
+    expect(miami.truncated).toBe(40 - MAX_PER_METRO);
+  });
+
+  it("caps the national section separately", () => {
+    const groups = groupByMetro(bulk("national", 30));
+    const national = groups.find((g) => g.slug === "national")!;
+    expect(national.items).toHaveLength(MAX_NATIONAL);
+    expect(national.truncated).toBe(30 - MAX_NATIONAL);
+  });
+
+  it("keeps the most important items when it truncates", () => {
+    const mixed = [...bulk("miami", 20, 1), ...bulk("miami", 3, 3)].map(
+      (item, i) => ({ ...item, sourceUrl: `https://example.com/x/${i}` }),
+    );
+    const miami = groupByMetro(mixed).find((g) => g.slug === "miami")!;
+    // All three importance-3 items must survive the cut.
+    expect(miami.items.filter((i) => i.importance === 3)).toHaveLength(3);
+  });
+
+  it("reports the overflow in both renderings", () => {
+    const items = bulk("miami", 40);
+    expect(renderDigestHtml(items)).toContain("more in the library");
+    expect(renderDigestText(items)).toContain("more in the library");
+  });
+
+  it("does not truncate when a section is under the cap", () => {
+    const groups = groupByMetro(bulk("austin", 5));
+    expect(groups[0].truncated).toBe(0);
+    expect(renderDigestHtml(bulk("austin", 5))).not.toContain("more in the library");
   });
 });

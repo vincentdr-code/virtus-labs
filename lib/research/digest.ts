@@ -41,29 +41,44 @@ export async function collectDigestItems(sinceDays = 7): Promise<DigestItem[]> {
   return items as DigestItem[];
 }
 
+/** A digest is a briefing, not an archive — the library holds the long tail. */
+export const MAX_PER_METRO = 15;
+export const MAX_NATIONAL = 10;
+
 /**
  * Group by metro for the email body. The three target markets come first and
  * in a fixed order; national items land in their own trailing section so they
- * never crowd out the local ones.
+ * never crowd out the local ones. Each section is capped, with the overflow
+ * reported as a count rather than silently dropped.
  */
 export function groupByMetro(items: DigestItem[]) {
-  const groups: Array<{ slug: string; name: string; items: DigestItem[] }> = [];
+  const groups: Array<{
+    slug: string;
+    name: string;
+    items: DigestItem[];
+    /** How many were left out of this section, for the "+N more" line. */
+    truncated: number;
+  }> = [];
+
   for (const metro of METROS) {
-    const inMetro = items.filter((i) => i.metro === metro.slug);
+    const inMetro = rankItems(items.filter((i) => i.metro === metro.slug));
     if (inMetro.length) {
       groups.push({
         slug: metro.slug,
         name: `${metro.name}, ${metro.state}`,
-        items: rankItems(inMetro),
+        items: inMetro.slice(0, MAX_PER_METRO),
+        truncated: Math.max(0, inMetro.length - MAX_PER_METRO),
       });
     }
   }
-  const national = items.filter((i) => i.metro === "national");
+
+  const national = rankItems(items.filter((i) => i.metro === "national"));
   if (national.length) {
     groups.push({
       slug: "national",
       name: "National / cross-market",
-      items: rankItems(national).slice(0, 12),
+      items: national.slice(0, MAX_NATIONAL),
+      truncated: Math.max(0, national.length - MAX_NATIONAL),
     });
   }
   return groups;
@@ -117,6 +132,8 @@ export function renderDigestHtml(items: DigestItem[]): string {
     year: "numeric",
   });
 
+  const shown = groups.reduce((n, g) => n + g.items.length, 0);
+
   const sections = groups
     .map(
       (group) => `
@@ -125,7 +142,14 @@ export function renderDigestHtml(items: DigestItem[]): string {
           ${escapeHtml(group.name)} <span style="color:${COLORS.sageDim};font-weight:400;">(${group.items.length})</span>
         </div>
       </td></tr>
-      ${group.items.map(itemHtml).join("")}`,
+      ${group.items.map(itemHtml).join("")}
+      ${
+        group.truncated
+          ? `<tr><td style="padding:12px 0 0;color:${COLORS.sageDim};font-size:13px;">
+               + ${group.truncated} more in the library
+             </td></tr>`
+          : ""
+      }`,
     )
     .join("");
 
@@ -146,6 +170,8 @@ export function renderDigestHtml(items: DigestItem[]): string {
         <div style="color:${COLORS.sageDim};font-size:10px;letter-spacing:0.3em;text-transform:uppercase;margin-top:4px;">Weekly Research Digest</div>
         <div style="color:${COLORS.sage};font-size:13px;margin-top:14px;">
           ${dateLabel} &middot; ${items.length} new item${items.length === 1 ? "" : "s"}${
+            shown < items.length ? ` &middot; top ${shown} shown` : ""
+          }${
             flagged ? ` &middot; <strong style="color:${COLORS.gold};">${flagged} worth flagging</strong>` : ""
           }
         </div>
@@ -178,7 +204,10 @@ export function renderDigestText(items: DigestItem[]): string {
           return `- ${i.headline}${flag}\n  ${trade} | ${i.sourceName}\n  ${i.summary}\n  ${i.sourceUrl}`;
         })
         .join("\n\n");
-      return `${group.name.toUpperCase()} (${group.items.length})\n${"-".repeat(40)}\n${lines}`;
+      const more = group.truncated
+        ? `\n\n  + ${group.truncated} more in the library`
+        : "";
+      return `${group.name.toUpperCase()} (${group.items.length})\n${"-".repeat(40)}\n${lines}${more}`;
     })
     .join("\n\n");
   return `VIRTUS LABS — WEEKLY RESEARCH DIGEST\n${items.length} new items\n\n${body}\n\nOpen the library: ${APP_URL}/research`;
