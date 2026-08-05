@@ -15,11 +15,21 @@ Three pillars this tool serves:
 | `/pipeline` | Prospect table with status badges and deal value rollup |
 | `/companies` | Company list, add form, detail pages with interaction timeline |
 | `/contacts` | Cross-company contact directory with decision-maker flags |
-| `/research` | Vertical research library — pain points, buyer profiles, market shifts |
+| `/research` | **Research library** — 7 trades x 3 metros, weekly news feed, email digest (see [RESEARCH.md](RESEARCH.md)) |
 | `/meeting-prep` | Auto-assembled prep sheet: archaic signals, research, last interaction, open deal |
 | `/deals` | Deal tracking with pipeline-by-stage chart |
 | `/projects` | Active client project tracker |
 | `/consultation` | **Consultation Prototype Builder** (see below) |
+
+## Research Library
+
+Seven trades (mechanical, electrical, plumbing, HVAC, architecture,
+environmental, civil) across Austin, Northern Virginia, and Miami. A weekly
+scan pulls from 26 free sources — Federal Register rulemaking, OpenAlex and
+arXiv research, municipal permit data, and trade press — classifies each item
+to a trade and market, scores it, and emails a digest of what changed.
+
+Full documentation: **[RESEARCH.md](RESEARCH.md)**
 
 ## Consultation Prototype Builder
 
@@ -53,6 +63,7 @@ cp .env.example .env
 #   ANTHROPIC_API_KEY — for the Consultation Prototype Builder
 npx prisma migrate dev
 npx prisma db seed
+npm run seed:research
 npm run dev
 ```
 
@@ -75,6 +86,7 @@ npm ci
 npx prisma generate
 npx prisma migrate deploy
 npx prisma db seed
+npm run seed:research
 npm run build
 
 # systemd service (PORT=3100, runs alongside other services on the box)
