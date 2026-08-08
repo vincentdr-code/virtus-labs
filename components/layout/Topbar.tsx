@@ -7,14 +7,15 @@ interface TopbarProps {
 
 export function Topbar({ title, action }: TopbarProps) {
   return (
-    <header className="h-20 border-b border-c-border bg-bg-secondary flex items-center justify-between px-10 shrink-0">
-      <h1 className="text-2xl font-bold tracking-tight text-text-primary">
+    // pl-16 below lg reserves room for the sidebar's floating hamburger.
+    <header className="flex h-20 shrink-0 items-center justify-between gap-3 border-b border-c-border bg-bg-secondary pl-16 pr-4 lg:px-10">
+      <h1 className="truncate text-xl font-bold tracking-tight text-text-primary sm:text-2xl">
         {title}
       </h1>
       {action && (
         <Link
           href={action.href}
-          className="inline-flex items-center h-11 px-6 rounded-full bg-gold text-bg-primary hover:bg-gold-bright text-sm font-bold tracking-wide transition-colors shadow-lg shadow-gold/20"
+          className="inline-flex h-11 shrink-0 items-center whitespace-nowrap rounded-full bg-gold px-5 text-sm font-bold tracking-wide text-bg-primary shadow-lg shadow-gold/20 transition-colors hover:bg-gold-bright sm:px-6"
         >
           {action.label}
         </Link>

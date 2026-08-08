@@ -186,15 +186,56 @@ try {
   }
 
   // --- mobile --------------------------------------------------------------
+  // "No horizontal scroll" is NOT sufficient on its own: a fixed sidebar can
+  // eat two thirds of a phone screen while the page still reports no overflow,
+  // which is exactly how the rail shipped broken once. Assert usable width too.
   await page.setViewportSize({ width: 375, height: 812 });
   for (const path of ["/research", "/research?trade=hvac", "/research/civil"]) {
     await page.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
+
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
     );
     if (overflow <= 1) ok(`${path} has no horizontal scroll at 375px`);
     else fail(`${path} horizontal scroll at 375px`, `${overflow}px overflow`);
+
+    const mainWidth = await page
+      .locator("main")
+      .evaluate((el) => el.getBoundingClientRect().width);
+    if (mainWidth >= 355) {
+      ok(`${path} gives main the full width at 375px (${Math.round(mainWidth)}px)`);
+    } else {
+      fail(
+        `${path} gives main the full width at 375px`,
+        `main is only ${Math.round(mainWidth)}px — the sidebar is stealing the viewport`,
+      );
+    }
   }
+
+  // --- mobile drawer opens, navigates, and dismisses -------------------------
+  await page.goto(`${BASE}/research`, { waitUntil: "networkidle" });
+  const railHidden = await page
+    .locator('[data-testid="sidebar"]')
+    .evaluate((el) => el.getBoundingClientRect().right <= 1);
+  if (railHidden) ok("sidebar is off-canvas at 375px");
+  else fail("sidebar is off-canvas at 375px", "it is occupying the viewport");
+
+  await page.click('button[title="Open navigation"]');
+  await page.waitForTimeout(350);
+  const drawerVisible = await page
+    .locator('[data-testid="sidebar"]')
+    .evaluate((el) => el.getBoundingClientRect().left >= -1);
+  if (drawerVisible) ok("hamburger opens the mobile drawer");
+  else fail("hamburger opens the mobile drawer");
+
+  await page.click('a[href="/deals"]');
+  await page.waitForURL(`${BASE}/deals`, { timeout: 15000 });
+  await page.waitForTimeout(400);
+  const drawerClosed = await page
+    .locator('[data-testid="sidebar"]')
+    .evaluate((el) => el.getBoundingClientRect().right <= 1);
+  if (drawerClosed) ok("drawer closes after navigating from it");
+  else fail("drawer closes after navigating from it", "it stayed over the page");
 
   await page.close();
 } finally {
