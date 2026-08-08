@@ -3,7 +3,7 @@ export function PrintButton() {
   return (
     <button
       onClick={() => window.print()}
-      className="text-emerald-bright text-xs hover:underline print:hidden"
+      className="text-azure-bright text-xs hover:underline print:hidden"
     >
       Print / Save PDF
     </button>

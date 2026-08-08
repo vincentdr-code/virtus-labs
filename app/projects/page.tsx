@@ -4,7 +4,7 @@ import { formatCurrency, formatDate } from "@/lib/utils";
 
 const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
   SCOPING: { label: "Scoping", color: "text-text-secondary" },
-  ACTIVE: { label: "Active", color: "text-emerald-bright" },
+  ACTIVE: { label: "Active", color: "text-azure-bright" },
   PAUSED: { label: "Paused", color: "text-gold" },
   DELIVERED: { label: "Delivered", color: "text-text-secondary" },
   CANCELLED: { label: "Cancelled", color: "text-red-400" },
@@ -32,7 +32,7 @@ export default async function ProjectsPage() {
             <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">
               Active Value
             </p>
-            <p className="text-emerald-bright text-2xl font-bold tabular-nums leading-none">
+            <p className="text-azure-bright text-2xl font-bold tabular-nums leading-none">
               {formatCurrency(totalActiveValue)}
             </p>
           </div>

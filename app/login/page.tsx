@@ -3,6 +3,7 @@ import { useState, useTransition } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
+import { TailorSentMark } from "@/components/brand/TailorSentMark";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,12 +32,14 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen w-full bg-bg-primary flex items-center justify-center p-6">
       <div className="w-full max-w-md">
-        <div className="text-center mb-10">
-          <p className="text-gold font-bold text-3xl tracking-[0.15em] leading-none">
-            VIRTUS LABS
+        <div className="mb-10 flex flex-col items-center text-center">
+          <TailorSentMark size={76} className="mb-5" />
+          <p className="text-3xl font-bold leading-none tracking-[0.15em]">
+            <span className="text-text-primary">TAILOR</span>
+            <span className="text-gold-bright">SENT</span>
           </p>
-          <p className="text-emerald-bright text-xs mt-3 uppercase tracking-[0.35em] font-semibold">
-            Operations
+          <p className="mt-3.5 text-[10px] font-semibold uppercase tracking-[0.35em] text-text-tertiary">
+            Tailored. Sent. Forward.
           </p>
         </div>
         <form
@@ -52,7 +55,7 @@ export default function LoginPage() {
               autoComplete="username"
               required
               autoFocus
-              className="bg-bg-primary border-c-border text-text-primary h-12 rounded-xl px-4 text-base focus-visible:border-emerald"
+              className="bg-bg-primary border-c-border text-text-primary h-12 rounded-xl px-4 text-base focus-visible:border-azure"
             />
           </div>
           <div>
@@ -64,7 +67,7 @@ export default function LoginPage() {
               type="password"
               autoComplete="current-password"
               required
-              className="bg-bg-primary border-c-border text-text-primary h-12 rounded-xl px-4 text-base focus-visible:border-emerald"
+              className="bg-bg-primary border-c-border text-text-primary h-12 rounded-xl px-4 text-base focus-visible:border-azure"
             />
           </div>
           {error && (

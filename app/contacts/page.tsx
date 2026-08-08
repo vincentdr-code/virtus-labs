@@ -50,7 +50,7 @@ export default async function ContactsPage() {
                     <td className="px-4 py-3">
                       <Link
                         href={`/companies/${c.companyId}`}
-                        className="text-emerald-bright hover:underline"
+                        className="text-azure-bright hover:underline"
                       >
                         {c.company.name}
                       </Link>
@@ -73,7 +73,7 @@ export default async function ContactsPage() {
                           href={c.linkedinUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-emerald-bright text-xs hover:underline"
+                          className="text-azure-bright text-xs hover:underline"
                         >
                           View ↗
                         </a>

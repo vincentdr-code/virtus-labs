@@ -22,9 +22,9 @@ export function InteractionList({ interactions }: { interactions: Item[] }) {
     <ol className="relative border-l border-c-border ml-2 space-y-6 mt-2">
       {interactions.map((i) => (
         <li key={i.id} className="ml-6">
-          <div className="absolute -left-[7px] mt-1 w-3.5 h-3.5 rounded-full bg-emerald border-2 border-bg-primary" />
+          <div className="absolute -left-[7px] mt-1 w-3.5 h-3.5 rounded-full bg-azure border-2 border-bg-primary" />
           <div className="flex items-center gap-2 mb-1 text-xs">
-            <span className="font-medium text-emerald-bright">
+            <span className="font-medium text-azure-bright">
               {TYPE_LABELS[i.type] ?? i.type}
             </span>
             <span className="text-text-tertiary">·</span>

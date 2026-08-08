@@ -45,5 +45,10 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  // PWA install assets must stay public: the browser fetches the manifest and
+  // icons from the login screen, before any session exists, and a redirect to
+  // /login there makes the app uninstallable.
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|favicon-32.png|apple-icon.png|icon.svg|manifest.webmanifest|icons/).*)",
+  ],
 };

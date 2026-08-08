@@ -47,7 +47,7 @@ export default async function ConsultationBriefPage({
         <div className="flex items-start justify-between">
           <div>
             <p className="text-gold font-bold text-xs uppercase tracking-widest">
-              VIRTUS LABS
+              TAILORSENT
             </p>
             <h1 className="text-2xl font-bold text-text-primary mt-1">
               {session.title}
@@ -90,7 +90,7 @@ export default async function ConsultationBriefPage({
                   </p>
                 )}
               </div>
-              <span className="text-xs text-emerald-bright border border-emerald/30 rounded px-2 py-1">
+              <span className="text-xs text-azure-bright border border-azure/30 rounded px-2 py-1">
                 Built from your words
               </span>
             </div>
@@ -195,7 +195,7 @@ export default async function ConsultationBriefPage({
 
         <Link
           href="/consultation"
-          className="block text-emerald-bright text-sm hover:underline print:hidden"
+          className="block text-azure-bright text-sm hover:underline print:hidden"
         >
           Back to sessions
         </Link>

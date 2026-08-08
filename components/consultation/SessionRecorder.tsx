@@ -187,7 +187,7 @@ export function SessionRecorder({
           <button
             onClick={endMeeting}
             disabled={analyzing}
-            className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald hover:bg-emerald-bright text-text-primary transition-colors disabled:opacity-60"
+            className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-azure hover:bg-azure-bright text-text-primary transition-colors disabled:opacity-60"
           >
             {analyzing ? "Finalizing..." : "End Meeting + Show Prototype"}
           </button>

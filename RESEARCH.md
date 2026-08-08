@@ -81,7 +81,7 @@ SMTP_HOST="smtp.gmail.com"
 SMTP_PORT="587"
 SMTP_USER="daniel.vincent572@gmail.com"
 SMTP_PASS="your-16-char-app-password"
-SMTP_FROM="Virtus Labs Research <daniel.vincent572@gmail.com>"
+SMTP_FROM="TailorSent Research <daniel.vincent572@gmail.com>"
 ```
 
 Then:
@@ -90,7 +90,7 @@ Then:
 npx prisma migrate deploy
 npm run seed:research     # 7 trades with per-metro breakdowns
 npm run build
-sudo systemctl restart virtus-labs
+sudo systemctl restart tailor-sent
 ```
 
 ## Running a scan
@@ -104,7 +104,7 @@ npm run research:scan -- --email-only   # resend last 7 days
 Or over HTTP:
 
 ```bash
-curl -X POST https://virtus-labs.duckdns.org/api/research/scan \
+curl -X POST https://tailorsent.duckdns.org/api/research/scan \
   -H "Authorization: Bearer $CRON_SECRET"
 ```
 
@@ -117,7 +117,7 @@ crontab -e
 ```
 
 ```cron
-0 11 * * 1 curl -fsS -X POST https://virtus-labs.duckdns.org/api/research/scan -H "Authorization: Bearer YOUR_CRON_SECRET" >> /home/ubuntu/research-scan.log 2>&1
+0 11 * * 1 curl -fsS -X POST https://tailorsent.duckdns.org/api/research/scan -H "Authorization: Bearer YOUR_CRON_SECRET" >> /home/ubuntu/research-scan.log 2>&1
 ```
 
 Cron runs in UTC; `11:00 UTC` is 7am EDT / 6am EST.

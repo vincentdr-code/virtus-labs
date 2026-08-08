@@ -61,7 +61,7 @@ export default async function ConsultationPage() {
                       <span
                         className={`text-xs font-medium ${
                           s.status === "COMPLETED"
-                            ? "text-emerald-bright"
+                            ? "text-azure-bright"
                             : "text-gold"
                         }`}
                       >
@@ -78,7 +78,7 @@ export default async function ConsultationPage() {
                             ? `/consultation/${s.id}/brief`
                             : `/consultation/${s.id}`
                         }
-                        className="text-emerald-bright text-xs hover:underline"
+                        className="text-azure-bright text-xs hover:underline"
                       >
                         {s.status === "COMPLETED" ? "View Prototype" : "Continue"}
                       </Link>

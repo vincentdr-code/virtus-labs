@@ -39,7 +39,7 @@ export default async function CompanyDetailPage({
                   href={company.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-emerald-bright text-xs hover:underline mt-1 inline-block"
+                  className="text-azure-bright text-xs hover:underline mt-1 inline-block"
                 >
                   {company.website}
                 </a>
@@ -96,7 +96,7 @@ export default async function CompanyDetailPage({
                       </p>
                       <p className="text-text-secondary text-xs">{c.title}</p>
                       {c.email && (
-                        <p className="text-emerald-bright text-xs mt-1">
+                        <p className="text-azure-bright text-xs mt-1">
                           {c.email}
                         </p>
                       )}

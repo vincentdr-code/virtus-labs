@@ -17,18 +17,24 @@ export interface DigestItem {
   publishedAt: Date;
 }
 
-const APP_URL = process.env.NEXTAUTH_URL ?? "https://virtus-labs.duckdns.org";
+const APP_URL = process.env.NEXTAUTH_URL ?? "https://tailorsent.duckdns.org";
 
-// Matches the app's own palette so the email reads as part of the product.
+/**
+ * Mirrors the app's own tokens so the digest reads as part of the product
+ * rather than a generic notification. Hex literals rather than CSS variables
+ * because mail clients strip custom properties — these must stay in sync with
+ * :root in app/globals.css by hand.
+ */
 const COLORS = {
-  ink: "#0A1613",
-  panel: "#101F1A",
-  rule: "#22463A",
-  parchment: "#F7F5EF",
-  sage: "#B8CCC2",
-  sageDim: "#7E948A",
-  emerald: "#2BE895",
-  gold: "#E8B54A",
+  ink: "#08152B",
+  panel: "#0E2244",
+  rule: "#1E3A63",
+  parchment: "#F3F4F6",
+  sage: "#B9C6D6",
+  sageDim: "#7C8FA6",
+  azure: "#5B9BE8",
+  gold: "#E8C468",
+  red: "#E04255",
 };
 
 /** Pull the items a digest should cover: anything added since the last one. */
@@ -101,7 +107,7 @@ function itemHtml(item: DigestItem): string {
   const trade = getTrade(item.trade)?.name ?? item.trade;
   const flag =
     item.importance >= 3
-      ? `<span style="background:${COLORS.gold};color:${COLORS.ink};font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:0.06em;">WORTH FLAGGING</span>`
+      ? `<span style="background:${COLORS.red};color:${COLORS.parchment};font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:0.06em;">WORTH FLAGGING</span>`
       : "";
   return `
     <tr>
@@ -138,7 +144,7 @@ export function renderDigestHtml(items: DigestItem[]): string {
     .map(
       (group) => `
       <tr><td style="padding:28px 0 4px;">
-        <div style="color:${COLORS.gold};font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;border-bottom:2px solid ${COLORS.emerald};padding-bottom:8px;">
+        <div style="color:${COLORS.gold};font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;border-bottom:2px solid ${COLORS.gold};padding-bottom:8px;">
           ${escapeHtml(group.name)} <span style="color:${COLORS.sageDim};font-weight:400;">(${group.items.length})</span>
         </div>
       </td></tr>
@@ -156,7 +162,7 @@ export function renderDigestHtml(items: DigestItem[]): string {
   const empty = `
     <tr><td style="padding:32px 0;color:${COLORS.sage};font-size:15px;">
       No new items this week. Either the sources were quiet or a feed is failing —
-      check the scan log at <a href="${APP_URL}/research" style="color:${COLORS.emerald};">${APP_URL}/research</a>.
+      check the scan log at <a href="${APP_URL}/research" style="color:${COLORS.azure};">${APP_URL}/research</a>.
     </td></tr>`;
 
   return `<!doctype html>
@@ -166,13 +172,13 @@ export function renderDigestHtml(items: DigestItem[]): string {
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
            style="max-width:640px;background:${COLORS.panel};border:1px solid ${COLORS.rule};border-radius:6px;padding:28px 28px 32px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;">
       <tr><td>
-        <div style="color:${COLORS.gold};font-size:18px;font-weight:300;letter-spacing:0.22em;">VIRTUS LABS</div>
+        <div style="color:${COLORS.gold};font-size:18px;font-weight:300;letter-spacing:0.22em;">TAILORSENT</div>
         <div style="color:${COLORS.sageDim};font-size:10px;letter-spacing:0.3em;text-transform:uppercase;margin-top:4px;">Weekly Research Digest</div>
         <div style="color:${COLORS.sage};font-size:13px;margin-top:14px;">
           ${dateLabel} &middot; ${items.length} new item${items.length === 1 ? "" : "s"}${
             shown < items.length ? ` &middot; top ${shown} shown` : ""
           }${
-            flagged ? ` &middot; <strong style="color:${COLORS.gold};">${flagged} worth flagging</strong>` : ""
+            flagged ? ` &middot; <strong style="color:${COLORS.red};">${flagged} worth flagging</strong>` : ""
           }
         </div>
       </td></tr>
@@ -193,7 +199,7 @@ export function renderDigestHtml(items: DigestItem[]): string {
 export function renderDigestText(items: DigestItem[]): string {
   const groups = groupByMetro(items);
   if (!items.length) {
-    return `Virtus Labs weekly research digest\n\nNo new items this week.\n\n${APP_URL}/research`;
+    return `TailorSent weekly research digest\n\nNo new items this week.\n\n${APP_URL}/research`;
   }
   const body = groups
     .map((group) => {
@@ -210,7 +216,7 @@ export function renderDigestText(items: DigestItem[]): string {
       return `${group.name.toUpperCase()} (${group.items.length})\n${"-".repeat(40)}\n${lines}${more}`;
     })
     .join("\n\n");
-  return `VIRTUS LABS — WEEKLY RESEARCH DIGEST\n${items.length} new items\n\n${body}\n\nOpen the library: ${APP_URL}/research`;
+  return `TAILORSENT — WEEKLY RESEARCH DIGEST\n${items.length} new items\n\n${body}\n\nOpen the library: ${APP_URL}/research`;
 }
 
 export interface SendResult {
@@ -247,12 +253,12 @@ export async function sendDigest(items: DigestItem[]): Promise<SendResult> {
 
   const flagged = items.filter((i) => i.importance >= 3).length;
   const subject = items.length
-    ? `Virtus Labs research — ${items.length} new${flagged ? `, ${flagged} to flag` : ""}`
-    : "Virtus Labs research — quiet week";
+    ? `TailorSent research — ${items.length} new${flagged ? `, ${flagged} to flag` : ""}`
+    : "TailorSent research — quiet week";
 
   try {
     const info = await transporter.sendMail({
-      from: process.env.SMTP_FROM ?? `Virtus Labs Research <${user}>`,
+      from: process.env.SMTP_FROM ?? `TailorSent Research <${user}>`,
       to,
       subject,
       text: renderDigestText(items),

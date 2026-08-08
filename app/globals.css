@@ -11,15 +11,18 @@
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
 
-  /* Virtus Labs palette */
+  /* TailorSent palette */
   --color-bg-primary: var(--bg-primary);
   --color-bg-secondary: var(--bg-secondary);
   --color-bg-tertiary: var(--bg-tertiary);
   --color-navy: var(--navy);
-  --color-emerald: var(--emerald);
-  --color-emerald-bright: var(--emerald-bright);
+  --color-azure: var(--azure);
+  --color-azure-bright: var(--azure-bright);
   --color-gold: var(--gold);
   --color-gold-bright: var(--gold-bright);
+  --color-flag-red: var(--flag-red);
+  --color-flag-red-bright: var(--flag-red-bright);
+  --color-silver: var(--silver);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-tertiary: var(--text-tertiary);
@@ -53,27 +56,55 @@
   --radius-2xl: calc(var(--radius) * 1.8);
 }
 
+/*
+ * TailorSent — "parade at dusk". One committed dark world rather than a
+ * light/dark pair: the brand is a uniform, not a theme toggle.
+ *
+ * Red and blue are anchored to the U.S. flag (Old Glory Red #B22234, with the
+ * blue pushed toward the 1993 royal shift) so the palette reads as the flag
+ * rather than as generic team colors. Gold is the one hue neither Patriots era
+ * used — it carries the craft signal and is reserved for brand and primary
+ * action only.
+ */
 :root {
-  /* Virtus Labs palette — vivid emerald + rich gold */
-  --bg-primary: #0A1613;
-  --bg-secondary: #101F1A;
-  --bg-tertiary: #172C25;
-  --navy: #0C1A16;
-  --emerald: #00C878;
-  --emerald-bright: #2BE895;
-  --gold: #E8B54A;
-  --gold-bright: #FFD273;
-  --text-primary: #F7F5EF;
-  --text-secondary: #B8CCC2;
-  --text-tertiary: #7E948A;
-  --c-border: #22463A;
-  --success: #2BE895;
-  --warning: #E8B54A;
-  --danger: #E0604A;
+  /* Grounds — navy, never black */
+  --bg-primary: #08152B;
+  --bg-secondary: #0E2244;
+  --bg-tertiary: #163057;
+  --navy: #050F20;
+
+  /* Brand accent. Primary action, active state, the wordmark. */
+  --gold: #C9A227;
+  --gold-bright: #E8C468;
+
+  /* Structural blue, bright enough to read on navy unlike the grounds. */
+  --azure: #2E63B8;
+  --azure-bright: #5B9BE8;
+
+  /* Flag red. Doubles as the danger semantic — a genuine overlap. */
+  --flag-red: #B22234;
+  --flag-red-bright: #E04255;
+
+  /* Comet silver, straight from the 1993 redesign. */
+  --silver: #9FB0C3;
+
+  --text-primary: #F3F4F6;
+  --text-secondary: #B9C6D6;
+  --text-tertiary: #7C8FA6;
+  --c-border: #1E3A63;
+
+  /*
+   * Status colors are deliberately NOT the brand accent. Gold means
+   * "TailorSent" everywhere in this UI, so a gold warning badge would be
+   * indistinguishable from a brand element — warning gets its own amber.
+   */
+  --success: #3DD68C;
+  --warning: #E89A3C;
+  --danger: #E04255;
 
   --radius: 0.625rem;
 
-  /* shadcn semantic tokens mapped to Virtus Labs palette */
+  /* shadcn semantic tokens mapped to the TailorSent palette */
   --background: var(--bg-primary);
   --foreground: var(--text-primary);
   --card: var(--bg-secondary);
@@ -81,12 +112,12 @@
   --popover: var(--bg-secondary);
   --popover-foreground: var(--text-primary);
   --primary: var(--gold);
-  --primary-foreground: var(--bg-primary);
+  --primary-foreground: var(--navy);
   --secondary: var(--bg-tertiary);
   --secondary-foreground: var(--text-primary);
   --muted: var(--bg-tertiary);
   --muted-foreground: var(--text-secondary);
-  --accent: var(--emerald);
+  --accent: var(--azure);
   --accent-foreground: var(--text-primary);
   --destructive: var(--danger);
   --destructive-foreground: var(--text-primary);
@@ -103,7 +134,24 @@
     @apply font-sans;
   }
   body {
-    background: var(--bg-primary);
+    /*
+     * Two very wide, very low-opacity washes: blue rising from the lower left,
+     * red bleeding in from the upper right. Reads as atmosphere rather than as
+     * a gradient, and keeps flat panels from looking pasted onto a void.
+     */
+    background:
+      radial-gradient(
+        ellipse 1200px 600px at 12% 100%,
+        rgba(46, 99, 184, 0.16),
+        transparent 62%
+      ),
+      radial-gradient(
+        ellipse 1000px 500px at 100% 0%,
+        rgba(178, 34, 52, 0.1),
+        transparent 58%
+      ),
+      var(--bg-primary);
+    background-attachment: fixed;
     color: var(--text-primary);
     font-size: 16px;
     line-height: 1.65;
@@ -113,11 +161,33 @@
     @apply font-semibold tracking-tight;
     color: var(--text-primary);
   }
+  ::selection {
+    background: var(--gold);
+    color: var(--navy);
+  }
   .stat-number {
-    color: var(--gold);
+    color: var(--gold-bright);
     font-variant-numeric: tabular-nums;
     font-size: 2.75rem;
     font-weight: 700;
     line-height: 1;
+  }
+}
+
+@layer components {
+  /*
+   * The stitch rule — a basting-stitch divider from the brand's tailoring
+   * half. Quieter than a solid hairline, and it marks section boundaries
+   * rather than decorating them.
+   */
+  .stitch-rule {
+    height: 1px;
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--c-border) 0,
+      var(--c-border) 8px,
+      transparent 8px,
+      transparent 14px
+    );
   }
 }

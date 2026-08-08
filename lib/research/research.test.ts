@@ -462,7 +462,7 @@ describe("digest", () => {
   it("renders a valid-looking html digest", () => {
     const html = renderDigestHtml(items);
     expect(html).toContain("<!doctype html>");
-    expect(html).toContain("VIRTUS LABS");
+    expect(html).toContain("TAILORSENT");
     expect(html).toContain("Recertification deadline set");
     expect(html).toContain("https://example.com/1");
   });
@@ -540,5 +540,40 @@ describe("digest caps", () => {
     const groups = groupByMetro(bulk("austin", 5));
     expect(groups[0].truncated).toBe(0);
     expect(renderDigestHtml(bulk("austin", 5))).not.toContain("more in the library");
+  });
+});
+
+describe("digest branding", () => {
+  const flagged: DigestItem = {
+    id: "f",
+    trade: "hvac",
+    metro: "miami",
+    headline: "Deadline set",
+    summary: "s",
+    sourceUrl: "https://example.com/f",
+    sourceName: "Src",
+    sourceTier: "REGULATORY",
+    category: "regulatory",
+    importance: 3,
+    publishedAt: new Date("2026-08-01"),
+  };
+
+  it("carries the TailorSent wordmark, not the old brand", () => {
+    const html = renderDigestHtml([flagged]);
+    expect(html).toContain("TAILORSENT");
+    expect(html).not.toMatch(/virtus/i);
+    expect(renderDigestText([flagged])).not.toMatch(/virtus/i);
+  });
+
+  it("flags urgent items in red, not the brand gold", () => {
+    const html = renderDigestHtml([flagged]);
+    // The badge must not reuse the accent that also marks brand chrome.
+    expect(html).toMatch(/background:#E04255;[^"]*">\s*WORTH FLAGGING/);
+  });
+
+  it("uses the navy ground rather than the retired green palette", () => {
+    const html = renderDigestHtml([flagged]);
+    expect(html).toContain("#08152B");
+    expect(html).not.toContain("#0A1613");
   });
 });

@@ -11,7 +11,7 @@ export function VerticalCard({ vertical }: { vertical: VerticalResearch }) {
     <Link href={`/research/${vertical.slug}`} className="block group">
       <div className="bg-bg-secondary border border-c-border rounded-lg p-5 hover:bg-bg-tertiary transition-colors h-full">
         <div className="flex items-start justify-between mb-2 gap-3">
-          <h3 className="font-semibold text-text-primary group-hover:text-emerald-bright">
+          <h3 className="font-semibold text-text-primary group-hover:text-azure-bright">
             {vertical.verticalName}
           </h3>
           <span className="text-text-tertiary text-[10px] shrink-0 uppercase tracking-wider">
@@ -22,7 +22,7 @@ export function VerticalCard({ vertical }: { vertical: VerticalResearch }) {
           <ul className="space-y-1.5 mt-3">
             {painPoints.slice(0, 2).map((p, i) => (
               <li key={i} className="text-text-secondary text-xs flex gap-2">
-                <span className="text-emerald mt-0.5 shrink-0">·</span>
+                <span className="text-azure mt-0.5 shrink-0">·</span>
                 <span className="line-clamp-2">{p}</span>
               </li>
             ))}

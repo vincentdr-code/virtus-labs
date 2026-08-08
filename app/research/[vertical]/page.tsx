@@ -60,7 +60,7 @@ export default async function VerticalPage({
           </span>
           <Link
             href={`/research?trade=${slug}`}
-            className="text-xs text-emerald-bright hover:text-gold-bright"
+            className="text-xs text-azure-bright hover:text-gold-bright"
           >
             See all {v.verticalName} items in the feed →
           </Link>
@@ -120,9 +120,9 @@ export default async function VerticalPage({
                         return (
                           <div
                             key={i}
-                            className="mt-3 rounded border border-emerald/30 bg-bg-tertiary/60 p-3"
+                            className="mt-3 rounded border border-azure/30 bg-bg-tertiary/60 p-3"
                           >
-                            <p className="mb-1 text-[10px] uppercase tracking-[0.14em] text-emerald-bright">
+                            <p className="mb-1 text-[10px] uppercase tracking-[0.14em] text-azure-bright">
                               Who to call
                             </p>
                             <p className="text-text-primary">
@@ -136,7 +136,7 @@ export default async function VerticalPage({
                           key={i}
                           className={
                             bullet
-                              ? "pl-3 text-text-secondary before:mr-2 before:text-emerald before:content-['·']"
+                              ? "pl-3 text-text-secondary before:mr-2 before:text-azure before:content-['·']"
                               : isLabel
                                 ? "pt-2 text-[10px] uppercase tracking-[0.14em] text-text-tertiary"
                                 : "text-text-primary"

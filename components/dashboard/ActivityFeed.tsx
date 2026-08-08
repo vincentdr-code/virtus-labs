@@ -34,7 +34,7 @@ export function ActivityFeed({ items }: { items: ActivityItem[] }) {
               </span>{" "}
               <Link
                 href={`/companies/${item.companyId}`}
-                className="text-emerald-bright hover:underline"
+                className="text-azure-bright hover:underline"
               >
                 {item.company.name}
               </Link>

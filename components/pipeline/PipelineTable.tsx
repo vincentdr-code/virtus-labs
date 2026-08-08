@@ -50,7 +50,7 @@ export function PipelineTable({ companies }: { companies: Row[] }) {
               <td className="px-4 py-3">
                 <Link
                   href={`/companies/${c.id}`}
-                  className="text-text-primary font-medium hover:text-emerald-bright"
+                  className="text-text-primary font-medium hover:text-azure-bright"
                 >
                   {c.name}
                 </Link>

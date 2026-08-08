@@ -7,13 +7,13 @@ interface StatCardProps {
 
 export function StatCard({ label, value, sub, gold = false }: StatCardProps) {
   return (
-    <div className="bg-bg-secondary border border-c-border rounded-2xl p-7 hover:border-emerald/50 transition-colors duration-300">
+    <div className="bg-bg-secondary border border-c-border rounded-2xl p-7 hover:border-azure/50 transition-colors duration-300">
       <p className="text-text-tertiary text-xs font-semibold uppercase tracking-[0.15em] mb-4">
         {label}
       </p>
       <p
         className={`text-4xl font-bold tabular-nums leading-none tracking-tight ${
-          gold ? "text-gold" : "text-emerald-bright"
+          gold ? "text-gold" : "text-azure-bright"
         }`}
       >
         {value}

@@ -27,7 +27,7 @@ export interface FetchResult {
 }
 
 const USER_AGENT =
-  "VirtusLabsResearch/1.0 (+https://virtus-labs.duckdns.org; internal market research)";
+  "TailorSentResearch/1.0 (+https://tailorsent.duckdns.org; internal market research)";
 
 const DEFAULT_TIMEOUT_MS = 20_000;
 

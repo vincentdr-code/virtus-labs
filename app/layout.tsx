@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
@@ -10,8 +10,26 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Virtus Labs Ops",
-  description: "Internal operations dashboard",
+  title: "TailorSent Operations",
+  description:
+    "Internal operations dashboard — market research, pipeline, and client delivery.",
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/apple-icon.png",
+  },
+  appleWebApp: {
+    capable: true,
+    title: "TailorSent",
+    statusBarStyle: "black-translucent",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#08152B",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

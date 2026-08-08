@@ -14,6 +14,7 @@ import {
   LogOut,
   Mic2,
 } from "lucide-react";
+import { TailorSentLockup } from "@/components/brand/TailorSentMark";
 
 const NAV_ITEMS = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -32,15 +33,10 @@ export function Sidebar() {
 
   return (
     <aside className="w-64 shrink-0 bg-navy border-r border-c-border flex flex-col min-h-screen">
-      <div className="px-8 pt-9 pb-7 border-b border-c-border">
-        <p className="text-gold font-bold text-xl tracking-[0.12em] leading-none">
-          VIRTUS LABS
-        </p>
-        <p className="text-emerald-bright text-[11px] mt-2.5 tracking-[0.3em] uppercase font-semibold">
-          Operations
-        </p>
+      <div className="px-6 pt-9 pb-7 border-b border-c-border">
+        <TailorSentLockup size={32} />
       </div>
-      <nav className="flex-1 px-4 py-5 space-y-1">
+      <nav className="flex-1 py-5 space-y-0.5">
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
           const active =
             pathname === href ||
@@ -49,10 +45,13 @@ export function Sidebar() {
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3.5 px-4 py-3 rounded-xl text-[15px] transition-all duration-200 ${
+              // Active state is a gold rail rather than a filled pill: gold is
+              // the brand accent, and a saturated blue block competes with the
+              // mark instead of pointing at the current page.
+              className={`flex items-center gap-3.5 border-l-[3px] py-3 pl-4 pr-4 text-[15px] transition-colors duration-200 ${
                 active
-                  ? "bg-emerald text-bg-primary font-bold shadow-lg shadow-emerald/25"
-                  : "text-text-secondary hover:bg-bg-tertiary hover:text-text-primary font-medium"
+                  ? "border-gold-bright bg-gold/10 font-bold text-gold-bright"
+                  : "border-transparent font-medium text-text-secondary hover:bg-bg-tertiary hover:text-text-primary"
               }`}
             >
               <Icon size={18} strokeWidth={active ? 2.5 : 2} />

@@ -40,7 +40,7 @@ function Pill({
       className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs tracking-wide transition-colors duration-150 ${
         active
           ? "border-gold bg-gold text-bg-primary font-semibold"
-          : "border-c-border text-text-secondary hover:border-emerald hover:text-text-primary"
+          : "border-c-border text-text-secondary hover:border-azure hover:text-text-primary"
       }`}
     >
       {label}

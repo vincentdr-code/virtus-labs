@@ -9,11 +9,11 @@ const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
   },
   MEETING_SCHEDULED: {
     label: "Meeting Scheduled",
-    color: "bg-emerald/20 text-emerald-bright border-emerald/40",
+    color: "bg-azure/20 text-azure-bright border-azure/40",
   },
   MEETING_HELD: {
     label: "Meeting Held",
-    color: "bg-emerald/30 text-emerald-bright border-emerald/50",
+    color: "bg-azure/30 text-azure-bright border-azure/50",
   },
   PROPOSAL_SENT: {
     label: "Proposal Sent",
@@ -21,7 +21,7 @@ const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
   },
   WON: {
     label: "Won",
-    color: "bg-emerald/40 text-text-primary border-emerald/60",
+    color: "bg-azure/40 text-text-primary border-azure/60",
   },
   LOST: {
     label: "Lost",

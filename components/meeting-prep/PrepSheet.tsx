@@ -75,7 +75,7 @@ export function PrepSheet({ company, research }: Props) {
                   </span>
                 </p>
                 {c.email && (
-                  <p className="text-emerald-bright text-xs mt-0.5">
+                  <p className="text-azure-bright text-xs mt-0.5">
                     {c.email}
                   </p>
                 )}
@@ -116,7 +116,7 @@ export function PrepSheet({ company, research }: Props) {
           <ul className="space-y-2">
             {previouslyDelivered.map((insight, i) => (
               <li key={i} className="text-text-secondary text-sm flex gap-2">
-                <span className="text-emerald mt-0.5">✓</span>
+                <span className="text-azure mt-0.5">✓</span>
                 <span>{insight}</span>
               </li>
             ))}

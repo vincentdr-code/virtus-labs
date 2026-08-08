@@ -27,8 +27,11 @@ export interface NewsCardItem {
  * that need attention read at a glance without relying on the text.
  */
 const STRIPE: Record<number, string> = {
-  3: "before:bg-gold",
-  2: "before:bg-emerald",
+  // Red is the attention color, not the brand color. Gold means "TailorSent"
+  // throughout this UI, so using it for the most urgent tier would make an
+  // item that needs action look the same as the logo and the active nav.
+  3: "before:bg-flag-red-bright",
+  2: "before:bg-gold",
   1: "before:bg-c-border",
 };
 
@@ -49,11 +52,11 @@ export function NewsCard({ item }: { item: NewsCardItem }) {
       }`}
     >
       <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] uppercase tracking-[0.14em]">
-        <span className="font-semibold text-emerald-bright">{trade}</span>
+        <span className="font-semibold text-azure-bright">{trade}</span>
         <span className="text-text-secondary">{metro}</span>
         <span className="text-text-tertiary">{category}</span>
         {item.importance >= 3 && (
-          <span className="rounded bg-gold px-1.5 py-0.5 font-bold text-bg-primary">
+          <span className="rounded bg-flag-red-bright px-1.5 py-0.5 font-bold text-text-primary">
             Worth flagging
           </span>
         )}

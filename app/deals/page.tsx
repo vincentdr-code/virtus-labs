@@ -9,7 +9,7 @@ const STAGE_CONFIG: Record<string, { label: string; color: string }> = {
   SCOPING: { label: "Scoping", color: "text-text-secondary" },
   PROPOSAL_SENT: { label: "Proposal Sent", color: "text-gold" },
   NEGOTIATION: { label: "Negotiation", color: "text-gold" },
-  WON: { label: "Won", color: "text-emerald-bright" },
+  WON: { label: "Won", color: "text-azure-bright" },
   LOST: { label: "Lost", color: "text-red-400" },
 };
 
@@ -39,7 +39,7 @@ export default async function DealsPage() {
             <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-2">
               Won
             </p>
-            <p className="text-emerald-bright text-2xl font-bold tabular-nums leading-none">
+            <p className="text-azure-bright text-2xl font-bold tabular-nums leading-none">
               {formatCurrency(won)}
             </p>
           </div>
@@ -94,7 +94,7 @@ export default async function DealsPage() {
                       <td className="px-4 py-3">
                         <Link
                           href={`/companies/${d.companyId}`}
-                          className="text-emerald-bright hover:underline"
+                          className="text-azure-bright hover:underline"
                         >
                           {d.company.name}
                         </Link>

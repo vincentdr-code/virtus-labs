@@ -1,6 +1,6 @@
-# virtus-labs
+# tailor-sent
 
-Internal operations dashboard for Virtus Labs. Private — not for distribution.
+Internal operations dashboard for TailorSent. Private — not for distribution.
 
 Three pillars this tool serves:
 1. **Market research** — scan verticals for companies with archaic workflows
@@ -71,14 +71,14 @@ Open http://localhost:3000 and sign in with your `ADMIN_USERNAME` / `ADMIN_PASSW
 
 ## Deployment
 
-Live at `https://virtus-labs.duckdns.org`, running on the existing AWS t2.micro
+Live at `https://tailorsent.duckdns.org`, running on the existing AWS t2.micro
 EC2 instance that also runs the Cosmas project, behind nginx with a Let's
 Encrypt certificate, as a systemd service.
 
 ```bash
 # On the EC2 box (Ubuntu, user: ubuntu)
-git clone https://github.com/vincentdr-code/virtus-labs.git ~/virtus-labs
-cd ~/virtus-labs
+git clone https://github.com/vincentdr-code/tailor-sent.git ~/tailor-sent
+cd ~/tailor-sent
 cp .env.example .env
 nano .env           # DATABASE_URL, NEXTAUTH_SECRET, NEXTAUTH_URL,
                      # ADMIN_USERNAME, ADMIN_PASSWORD, ANTHROPIC_API_KEY
@@ -90,26 +90,26 @@ npm run seed:research
 npm run build
 
 # systemd service (PORT=3100, runs alongside other services on the box)
-sudo nano /etc/systemd/system/virtus-labs.service
+sudo nano /etc/systemd/system/tailor-sent.service
 sudo systemctl daemon-reload
-sudo systemctl enable --now virtus-labs
+sudo systemctl enable --now tailor-sent
 
 # nginx reverse proxy + HTTPS
-sudo nano /etc/nginx/sites-available/virtus-labs   # proxy_pass http://localhost:3100
-sudo ln -s /etc/nginx/sites-available/virtus-labs /etc/nginx/sites-enabled/
+sudo nano /etc/nginx/sites-available/tailor-sent   # proxy_pass http://localhost:3100
+sudo ln -s /etc/nginx/sites-available/tailor-sent /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
-sudo certbot --nginx -d virtus-labs.duckdns.org
+sudo certbot --nginx -d tailorsent.duckdns.org
 ```
 
 Update a running deployment:
 
 ```bash
-cd ~/virtus-labs
+cd ~/tailor-sent
 git pull origin master
 npm ci
 npx prisma migrate deploy
 npm run build
-sudo systemctl restart virtus-labs
+sudo systemctl restart tailor-sent
 ```
 
 See `DEPLOYMENT_LOG.md` for the full walkthrough of this deployment, including
